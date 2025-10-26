@@ -93,7 +93,11 @@ export async function GeminiLLM(
 
   // Poll until Gemini finishes processing the asset (state become ACTIVE)
   /** Wait for file processing to complete by polling the file status */
+  const pollDeadline = Date.now() + 120_000;
   while (uploadedFile.state === "PROCESSING") {
+    if (Date.now() > pollDeadline) {
+      throw Error("File processing timed out after 120 seconds.");
+    }
     await new Promise((r) => setTimeout(r, 500));
     uploadedFile = await genAI.files.get({ name: uploadedFile.name! });
   }
