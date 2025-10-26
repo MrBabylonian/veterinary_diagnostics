@@ -11,7 +11,7 @@ Return only the hematologic values in the following strict JSON structure:
   "quantitative_hemogram": {
     "PARAMETER NAME": {
       "value": number or null,
-      "unit": "unit exactly as written in the report" or Null,
+      "unit": "unit exactly as written in the report" or null,
       "ref_range": "min - max"
     }
   },
