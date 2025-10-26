@@ -1,0 +1,83 @@
+🧪 Prompt (English version)
+
+Task: Extract hematologic (blood test) data from a veterinary laboratory report provided as one or more PDF pages converted to images.
+The report may span multiple pages; images are provided in order.
+
+📌 Your goal
+
+Return only the hematologic values in the following strict JSON structure:
+
+{
+  "quantitative_hemogram": {
+    "PARAMETER NAME": {
+      "value": number or null,
+      "unit": "unit exactly as written in the report",
+      "ref_range": "min - max"
+    }
+  },
+  "morphology": {
+    "erythrocytic": {
+      "Parameter": true | false | "+" | "++" | null
+    },
+    "leukocytic": {
+      "Parameter": true | false | "+" | "++" | null
+    },
+    "platelet": {
+      "Parameter": true | false | "+" | "++" | null
+    }
+  }
+}
+
+🎯 Objectives
+
+Collect all hematology values appearing anywhere in the report, even if split across pages.
+
+Include only tests that are visibly present in the images — do not add common or expected tests that aren’t shown.
+
+If a parameter appears but has no value or unit → use null.
+
+Do not infer or invent values.
+
+If a morphology parameter is listed without modifiers → set its value to true.
+
+🔹 Quantitative hemogram rules
+
+Copy parameter names exactly as printed (including accents, symbols, case, punctuation).
+
+Copy units exactly as written (e.g., %, pg, fL, g/dL, thousand/µL, million/µL).
+
+Do not translate, abbreviate, or normalize names or units.
+
+If the unit is adjacent to the numeric value, separate them logically in your output.
+
+Do not confuse units with the reference range.
+
+If the unit is missing → set "unit": null.
+
+Preserve the logical order (e.g., RBC → HGB → HCT → MCV → MCH → MCHC → RDW → …).
+
+If a row has a name but no numeric value → "value": null.
+
+🔹 Morphology section rules
+
+Divide into three subsections: "erythrocytic", "leukocytic", and "platelet".
+
+Possible values:
+
+true: parameter appears but without modifiers
+
+false: explicitly marked as absent
+
+"+", "++", "*": if those marks appear
+
+null: parameter not mentioned at all
+
+Do not invent parameters; if not found, set false or null appropriately.
+
+📌 Output requirements
+
+Return a valid, well-formatted JSON object only.
+
+No text, commentary, or explanation outside the JSON.
+
+Follow the structure exactly.
