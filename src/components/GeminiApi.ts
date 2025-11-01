@@ -11,16 +11,11 @@
  */
 
 import { GoogleGenAI } from "@google/genai";
-import { load } from "std/dotenv/mod.ts";
-import { resolve } from "std/path/mod.ts";
-
-// Load environment variables from .env file
-await load({
-  export: true,
-});
+import { readFile } from "node:fs/promises";
+import { basename, isAbsolute, resolve as resolvePath } from "node:path";
 
 /** Google Gemini API key loaded from environment variables */
-const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 if (!GEMINI_API_KEY) {
   throw new Error("GEMINI_API_KEY environment variable is not set.");
@@ -57,8 +52,11 @@ const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
  *
  * @example
  * ```typescript
- * const pdfBytes = await Deno.readFile("medical_report.pdf");
- * const pdfFile = new File([pdfBytes], "medical_report.pdf", {
+ * import { readFile } from "node:fs/promises";
+ * import { basename } from "node:path";
+ *
+ * const pdfBytes = await readFile("medical_report.pdf");
+ * const pdfFile = new File([pdfBytes], basename("medical_report.pdf"), {
  *   type: "application/pdf",
  * });
  *
@@ -73,8 +71,13 @@ export async function GeminiLLM(
   prompt_path: string,
   pdfFile: File,
 ): Promise<string> {
-  /** Read the prompt text from the specified file path */
-  const prompt = await Deno.readTextFile(resolve(prompt_path));
+  /** Read the prompt text from the specified file path using Node.js fs */
+  const absolutePromptPath = isAbsolute(prompt_path)
+    ? prompt_path
+    : resolvePath(process.cwd(), prompt_path);
+  const prompt = await readFile(absolutePromptPath, { encoding: "utf-8" });
+
+
 
   // Upload the PDF: sdk accepts path string or Blob/File objects
   /** Upload the PDF file to Gemini's file API for processing */
@@ -132,7 +135,7 @@ export async function GeminiLLM(
   });
 
   return JSON.stringify({
-    prompt: prompt,
+    prompt: absolutePromptPath,
     file: {
       name: uploadedFile.name,
       uri: uploadedFile.uri,
@@ -148,20 +151,19 @@ export async function GeminiLLM(
 
 /**
  * Example usage demonstrating how to use the GeminiLLM function
- * Uncomment the following code block to test the functionality
+ * This code block demonstrates loading a PDF, processing it, and displaying results
  */
-/*
+
 // Load a PDF file from disk
-const pdfBytes = await Deno.readFile(resolve("PORTA_LILLI.pdf"));
+// const pdfBytes = await readFile(resolvePath("../../PORTA_LILLI.pdf"));
 
-// Create a File object from the PDF bytes
-const pdfFile = new File([pdfBytes], basename("PORTA_LILLI.pdf"), {
-  type: "application/pdf",
-});
+// // Create a File object from the PDF bytes
+// const pdfFile = new File([pdfBytes], basename("../../PORTA_LILLI.pdf"), {
+//   type: "application/pdf",
+// });
 
-// Process the PDF with a custom prompt
-const result = await GeminiLLM("prompt.txt", pdfFile);
+// // Process the PDF with a custom prompt
+// const result = await GeminiLLM("../../prompt.txt", pdfFile);
 
-// Display the formatted JSON response
-console.log(JSON.stringify(JSON.parse(result), null, 2));
-*/
+// // Display the formatted JSON response
+// console.log(JSON.stringify(JSON.parse(result), null, 2));
