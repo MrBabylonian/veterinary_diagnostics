@@ -43,7 +43,7 @@ const Upload = () => {
             if (response.ok) {
                 // Parse the JSON response
                 const result = await response.json();
-                setUploadStatus(`Success: PDF saved at ${result.savedAt}`);
+                setUploadStatus(`Success: PDF saved`);
             } else {
                 // Handle error responses
                 const errorText = await response.text();

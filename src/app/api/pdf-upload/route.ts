@@ -12,7 +12,7 @@
 import { GeminiLLM } from "@/components/GeminiApi";
 import { NextRequest, NextResponse } from "next/server";
 import { mkdir, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 
 /** Force Node.js runtime for file system operations */
 export const runtime = "nodejs";
@@ -69,10 +69,12 @@ export async function POST(request: NextRequest) {
   await mkdir(uploadDir, { recursive: true });
 
   // Generate a safe filename, using the original name if available
-  const filename = file.name?.trim()
-    ? file.name
-    : `upload-${Date.now()}.pdf`;
-  const filePath = join(uploadDir, filename);
+  const originalFileName = file.name?.trim() ? file.name
+    : null;
+  
+  // If original file name exists, replace every character that is not safe with an underscore
+  const safeFileName = originalFileName?.replace(/[^a-zA-Z0-9._-]/g, "_") ?? `upload-${Date.now()}.pdf`
+  const filePath = join(uploadDir, safeFileName);
 
   // Write the file bytes to the specified path
   await writeFile(filePath, bytes);
