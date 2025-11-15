@@ -68,16 +68,14 @@ const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
  * @since 1.0.0
  */
 export async function GeminiLLM(
-  prompt_path: string,
-  pdfFile: File,
+    prompt_path: string,
+    pdfFile: File,
 ): Promise<string> {
-  /** Read the prompt text from the specified file path using Node.js fs */
-  const absolutePromptPath = isAbsolute(prompt_path)
-    ? prompt_path
-    : resolvePath(process.cwd(), prompt_path);
-  const prompt = await readFile(absolutePromptPath, { encoding: "utf-8" });
-
-
+    /** Read the prompt text from the specified file path using Node.js fs */
+    const absolutePromptPath = isAbsolute(prompt_path)
+        ? prompt_path
+        : resolvePath(process.cwd(), prompt_path);
+    const prompt = await readFile(absolutePromptPath, { encoding: "utf-8" });
 
     // Upload the PDF: sdk accepts path string or Blob/File objects
     /** Upload the PDF file to Gemini's file API for processing */
