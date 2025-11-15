@@ -10,15 +10,15 @@
  * @version 1.0.0
  */
 
-import { GoogleGenAI } from "@google/genai";
 import { readFile } from "node:fs/promises";
-import { basename, isAbsolute, resolve as resolvePath } from "node:path";
+import { isAbsolute, resolve as resolvePath } from "node:path";
+import { GoogleGenAI } from "@google/genai";
 
 /** Google Gemini API key loaded from environment variables */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 if (!GEMINI_API_KEY) {
-  throw new Error("GEMINI_API_KEY environment variable is not set.");
+    throw new Error("GEMINI_API_KEY environment variable is not set.");
 }
 
 const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
@@ -68,85 +68,86 @@ const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
  * @since 1.0.0
  */
 export async function GeminiLLM(
-  prompt_path: string,
-  pdfFile: File,
+    prompt_path: string,
+    pdfFile: File,
 ): Promise<string> {
-  /** Read the prompt text from the specified file path using Node.js fs */
-  const absolutePromptPath = isAbsolute(prompt_path)
-    ? prompt_path
-    : resolvePath(process.cwd(), prompt_path);
-  const prompt = await readFile(absolutePromptPath, { encoding: "utf-8" });
+    /** Read the prompt text from the specified file path using Node.js fs */
+    const absolutePromptPath = isAbsolute(prompt_path)
+        ? prompt_path
+        : resolvePath(process.cwd(), prompt_path);
+    const prompt = await readFile(absolutePromptPath, { encoding: "utf-8" });
 
+    // Upload the PDF: sdk accepts path string or Blob/File objects
+    /** Upload the PDF file to Gemini's file API for processing */
+    let uploadedFile = await genAI.files.upload({
+        file: pdfFile,
+        config: {
+            displayName: pdfFile.name,
+            mimeType: pdfFile.type || "application/pdf",
+        },
+    });
 
-
-  // Upload the PDF: sdk accepts path string or Blob/File objects
-  /** Upload the PDF file to Gemini's file API for processing */
-  let uploadedFile = await genAI.files.upload({
-    file: pdfFile,
-    config: {
-      displayName: pdfFile.name,
-      mimeType: pdfFile.type || "application/pdf",
-    },
-  });
-
-  /** Check if file upload was successful and returned a file name */
-  if (!uploadedFile.name) {
-    throw new Error("Gemini upload did not return a file name.");
-  }
-
-  // Poll until Gemini finishes processing the asset (state become ACTIVE)
-  /** Wait for file processing to complete by polling the file status */
-  const pollDeadline = Date.now() + 120_000;
-  while (uploadedFile.state === "PROCESSING") {
-    if (Date.now() > pollDeadline) {
-      throw Error("File processing timed out after 120 seconds.");
+    /** Check if file upload was successful and returned a file name */
+    if (!uploadedFile.name) {
+        throw new Error("Gemini upload did not return a file name.");
     }
-    await new Promise((r) => setTimeout(r, 500));
-    uploadedFile = await genAI.files.get({ name: uploadedFile.name! });
-  }
 
-  /** Verify that file processing completed successfully */
-  if (uploadedFile.state !== "ACTIVE" || !uploadedFile.uri) {
-    type UploadedFileWithError = { error?: { message?: string } };
-    const failureReason =
-      (uploadedFile as UploadedFileWithError).error?.message ?? "unknown";
-    throw new Error(
-      `Gemini file upload failed; state=${uploadedFile.state} reason=${failureReason}`,
-    );
-  }
+    // Poll until Gemini finishes processing the asset (state become ACTIVE)
+    /** Wait for file processing to complete by polling the file status */
+    const pollDeadline = Date.now() + 120_000;
+    while (uploadedFile.state === "PROCESSING") {
+        if (Date.now() > pollDeadline) {
+            throw Error("File processing timed out after 120 seconds.");
+        }
+        await new Promise((r) => setTimeout(r, 500));
+        if (!uploadedFile.name) {
+            throw new Error("Uploaded file name is null or undefined.");
+        }
+        uploadedFile = await genAI.files.get({ name: uploadedFile.name });
+    }
 
-  /** Generate content using Gemini model with the prompt and uploaded PDF */
-  const response = await genAI.models.generateContent({
-    model: "gemini-2.5-pro",
-    contents: [
-      {
-        role: "user",
-        parts: [
-          { text: prompt },
-          {
-            fileData: {
-              fileUri: uploadedFile.uri,
-              mimeType: uploadedFile.mimeType ?? "application/pdf",
+    /** Verify that file processing completed successfully */
+    if (uploadedFile.state !== "ACTIVE" || !uploadedFile.uri) {
+        type UploadedFileWithError = { error?: { message?: string; }; };
+        const failureReason =
+            (uploadedFile as UploadedFileWithError).error?.message ?? "unknown";
+        throw new Error(
+            `Gemini file upload failed; state=${uploadedFile.state} reason=${failureReason}`,
+        );
+    }
+
+    /** Generate content using Gemini model with the prompt and uploaded PDF */
+    const response = await genAI.models.generateContent({
+        model: "gemini-2.5-pro",
+        contents: [
+            {
+                role: "user",
+                parts: [
+                    { text: prompt },
+                    {
+                        fileData: {
+                            fileUri: uploadedFile.uri,
+                            mimeType: uploadedFile.mimeType ?? "application/pdf",
+                        },
+                    },
+                ],
             },
-          },
         ],
-      },
-    ],
-  });
+    });
 
-  return JSON.stringify({
-    prompt: absolutePromptPath,
-    file: {
-      name: uploadedFile.name,
-      uri: uploadedFile.uri,
-      mimeType: uploadedFile.mimeType,
-      sizeBytes: uploadedFile.sizeBytes,
-    },
-    candidates: response.candidates ?? [],
-    usageMetadata: response.usageMetadata ?? null,
-    promptFeedback: response.promptFeedback ?? null,
-    text: response.text ?? "",
-  });
+    return JSON.stringify({
+        prompt: absolutePromptPath,
+        file: {
+            name: uploadedFile.name,
+            uri: uploadedFile.uri,
+            mimeType: uploadedFile.mimeType,
+            sizeBytes: uploadedFile.sizeBytes,
+        },
+        candidates: response.candidates ?? [],
+        usageMetadata: response.usageMetadata ?? null,
+        promptFeedback: response.promptFeedback ?? null,
+        text: response.text ?? "",
+    });
 }
 
 /**
