@@ -11,8 +11,6 @@
 
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { type NextRequest, NextResponse } from "next/server";
-import { GeminiLLM } from "@/components/GeminiApi";
 
 /** Force Node.js runtime for file system operations */
 export const runtime = "nodejs";
