@@ -12,7 +12,7 @@
 import { GeminiLLM } from "@/components/GeminiApi";
 import { NextRequest, NextResponse } from "next/server";
 import { mkdir, writeFile } from "node:fs/promises";
-import { basename, join } from "node:path";
+import { join } from "node:path";
 
 /** Force Node.js runtime for file system operations */
 export const runtime = "nodejs";
