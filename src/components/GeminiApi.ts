@@ -12,7 +12,7 @@
 
 import { GoogleGenAI } from "@google/genai";
 import { readFile } from "node:fs/promises";
-import { basename, isAbsolute, resolve as resolvePath } from "node:path";
+import { isAbsolute, resolve as resolvePath } from "node:path";
 
 /** Google Gemini API key loaded from environment variables */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -67,10 +67,7 @@ const genAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
  *
  * @since 1.0.0
  */
-export async function GeminiLLM(
-  prompt_path: string,
-  pdfFile: File,
-): Promise<string> {
+export async function GeminiLLM(prompt_path: string, pdfFile: File,): Promise<string> {
   /** Read the prompt text from the specified file path using Node.js fs */
   const absolutePromptPath = isAbsolute(prompt_path)
     ? prompt_path
