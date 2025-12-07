@@ -17,11 +17,6 @@
         "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "incremental": true,
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ]
+        "incremental": true
     }
 }
