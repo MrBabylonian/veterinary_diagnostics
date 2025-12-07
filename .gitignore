@@ -14,7 +14,8 @@
 /coverage
 
 # next.js
-/.next/
+**/.next/
+frontend/client/.next/dev/logs/next-development.log
 /out/
 
 # production
@@ -41,3 +42,4 @@ yarn-error.log*
 next-env.d.ts
 .turbo
 .github/*
+
