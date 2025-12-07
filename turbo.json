@@ -7,7 +7,8 @@
             ],
             "outputs": [
                 ".next/**",
-                "!.next/cache/**"
+                "!.next/cache/**",
+                "dist/**"
             ]
         },
         "check-types": {
@@ -17,6 +18,17 @@
         },
         "dev": {
             "persistent": true,
+            "cache": false
+        },
+        "lint": {
+            "dependsOn": [
+                "^lint"
+            ]
+        },
+        "test": {
+            "dependsOn": [
+                "^test"
+            ],
             "cache": false
         }
     }
