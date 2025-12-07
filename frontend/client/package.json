@@ -8,8 +8,5 @@
         "start": "next start",
         "lint": "next lint",
         "check-types": "tsc --noEmit"
-    },
-    "dependencies": {
-        "@veterinary/configuration": "*"
     }
 }
