@@ -6,13 +6,13 @@ import { Fragment, useState } from "react";
 
 const Upload = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [uploadStatus, setUploadStatus] = useState<String>("");
+    const [uploadStatus, setUploadStatus] = useState<string>("");
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             // Check if the file is a PDF
-            if (file.type !== 'application/pdf') {
+            if (file.type !== "application/pdf") {
                 setUploadStatus("Error: Only PDF files are allowed");
                 setSelectedFile(null);
                 return;
@@ -75,10 +75,7 @@ const Upload = () => {
             </Label>
 
             {/* Upload button */}
-            <Button
-                onClick={handleUpload}
-                disabled={!selectedFile}
-            >
+            <Button onClick={handleUpload} disabled={!selectedFile}>
                 Upload PDF
             </Button>
 
