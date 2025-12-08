@@ -1,12 +1,13 @@
 {
-    "name": "client",
-    "version": "1.0.0",
-    "private": true,
-    "scripts": {
-        "dev": "next dev",
-        "build": "next build",
-        "start": "next start",
-        "lint": "next lint",
-        "check-types": "tsc --noEmit"
-    }
+	"name": "client",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"format": "biome check --write",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"check-types": "tsc --noEmit"
+	}
 }

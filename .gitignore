@@ -20,7 +20,7 @@ frontend/client/.next/dev/logs/next-development.log
 
 # NestJS
 **/dist/*
-
+/dist/
 # production
 /build
 
