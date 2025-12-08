@@ -1,0 +1,28 @@
+{
+    "extends": "@veterinary/configuration/tsconfig",
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ]
+        },
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ]
+    },
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts",
+        ".next/dev/types/**/*.ts",
+        "**/*.mts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

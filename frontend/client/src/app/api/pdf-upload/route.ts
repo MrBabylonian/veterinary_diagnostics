@@ -9,6 +9,8 @@
  * @version 1.0.0
  */
 
+import { GeminiLLM } from "../../../components/GeminiApi";
+import { NextRequest, NextResponse } from "next/server";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
@@ -67,12 +69,11 @@ export async function POST(request: NextRequest) {
     await mkdir(uploadDir, { recursive: true });
 
     // Generate a safe filename, using the original name if available
-    const originalFileName = file.name?.trim() ? file.name : null;
+    const originalFileName = file.name?.trim() ? file.name
+        : null;
 
     // If original file name exists, replace every character that is not safe with an underscore
-    const safeFileName =
-        originalFileName?.replace(/[^a-zA-Z0-9._-]/g, "_") ??
-        `upload-${Date.now()}.pdf`;
+    const safeFileName = originalFileName?.replace(/[^a-zA-Z0-9._-]/g, "_") ?? `upload-${Date.now()}.pdf`;
     const filePath = join(uploadDir, safeFileName);
 
     // Write the file bytes to the specified path
@@ -80,13 +81,10 @@ export async function POST(request: NextRequest) {
 
     const llmResponse = await GeminiLLM("./prompts/diagnostic_prompt.txt", file);
     // Return a success response with the saved file path
-    return new NextResponse(
-        JSON.stringify({
-            llmResponse: llmResponse,
-        }),
-        {
-            status: 201,
-            headers: { "content-type": "application/json" },
-        },
-    );
+    return new NextResponse(JSON.stringify({
+        llmResponse: llmResponse
+    }), {
+        status: 201,
+        headers: { "content-type": "application/json" },
+    });
 }
