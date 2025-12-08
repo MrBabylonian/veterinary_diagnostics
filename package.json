@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "turbo run dev --ui tui",
         "build": "turbo run build",
+        "format": "turbo run format",
         "start": "turbo run start",
         "check-types": "turbo run check-types",
         "lint": "turbo run lint",

@@ -11,6 +11,12 @@
                 "dist/**"
             ]
         },
+        "format": {
+            "dependsOn": [
+                "^format"
+            ],
+            "cache": false
+        },
         "check-types": {
             "dependsOn": [
                 "^check-types"
