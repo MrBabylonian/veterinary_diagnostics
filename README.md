@@ -28,3 +28,16 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Branch Protection
+
+This repository has branch protection enabled for the `main` branch. Direct pushes to `main` are not allowed. 
+
+### How to contribute:
+
+1. Create a new feature branch from `main`
+2. Make your changes and commit them to your feature branch
+3. Push your feature branch to GitHub
+4. Create a pull request to merge your changes into `main`
+
+The GitHub Actions workflow `.github/workflows/protect-main-branch.yml` will automatically reject any direct pushes to the `main` branch.
