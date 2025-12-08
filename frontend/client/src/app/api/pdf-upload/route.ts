@@ -26,7 +26,7 @@ export const runtime = "nodejs";
  *
  * @param request - The incoming Next.js request object containing form data
  *
- * @returns Promise<NextResponse> - JSON response with the saved file path or error message
+ * @returns Promise<NextResponse> - JSON response containing `savedAt` (the saved file path) and `llmResponse` (analysis result), or an error message
  *
  * @throws {NextResponse} Returns 400 if no PDF file is provided
  * @throws {NextResponse} Returns 415 if the uploaded file is not a PDF
@@ -44,51 +44,53 @@ export const runtime = "nodejs";
  *
  * const result = await response.json();
  * console.log('PDF saved at:', result.savedAt);
+ * console.log('Analysis result:', result.llmResponse);
  * ```
  */
 export async function POST(request: NextRequest) {
-	// Extract the form data from the incoming request
-	const form = await request.formData();
-	const file = form.get("pdf");
+    // Extract the form data from the incoming request
+    const form = await request.formData();
+    const file = form.get("pdf");
 
-	// Check if a file was provided and is actually a File object
-	if (!(file instanceof File)) {
-		return new NextResponse("Missing PDF", { status: 400 });
-	}
+    // Check if a file was provided and is actually a File object
+    if (!(file instanceof File)) {
+        return new NextResponse("Missing PDF", { status: 400 });
+    }
 
-	// Validate that the uploaded file is a PDF by checking its MIME type
-	if (file.type !== "application/pdf") {
-		return new NextResponse("Only PDFs allowed", { status: 415 });
-	}
+    // Validate that the uploaded file is a PDF by checking its MIME type
+    if (file.type !== "application/pdf") {
+        return new NextResponse("Only PDFs allowed", { status: 415 });
+    }
 
-	// Convert the file to a byte array for writing to disk
-	const bytes = new Uint8Array(await file.arrayBuffer());
+    // Convert the file to a byte array for writing to disk
+    const bytes = new Uint8Array(await file.arrayBuffer());
 
-	// Create the upload directory path and ensure it exists
-	const uploadDir = join(process.cwd(), "tmp", "uploads");
-	await mkdir(uploadDir, { recursive: true });
+    // Create the upload directory path and ensure it exists
+    const uploadDir = join(process.cwd(), "tmp", "uploads");
+    await mkdir(uploadDir, { recursive: true });
 
-	// Generate a safe filename, using the original name if available
-	const originalFileName = file.name?.trim() ? file.name : null;
+    // Generate a safe filename, using the original name if available
+    const originalFileName = file.name?.trim() ? file.name : null;
 
-	// If original file name exists, replace every character that is not safe with an underscore
-	const safeFileName =
-		originalFileName?.replace(/[^a-zA-Z0-9._-]/g, "_") ??
-		`upload-${Date.now()}.pdf`;
-	const filePath = join(uploadDir, safeFileName);
+    // If original file name exists, replace every character that is not safe with an underscore
+    const safeFileName =
+        originalFileName?.replace(/[^a-zA-Z0-9._-]/g, "_") ??
+        `upload-${Date.now()}.pdf`;
+    const filePath = join(uploadDir, safeFileName);
 
-	// Write the file bytes to the specified path
-	await writeFile(filePath, bytes);
+    // Write the file bytes to the specified path
+    await writeFile(filePath, bytes);
 
-	const llmResponse = await GeminiLLM("./prompts/diagnostic_prompt.txt", file);
-	// Return a success response with the saved file path
-	return new NextResponse(
-		JSON.stringify({
-			llmResponse: llmResponse,
-		}),
-		{
-			status: 201,
-			headers: { "content-type": "application/json" },
-		},
-	);
+    const llmResponse = await GeminiLLM("./prompts/diagnostic_prompt.txt", file);
+    // Return a success response with the saved file path and LLM result
+    return new NextResponse(
+        JSON.stringify({
+            savedAt: filePath,
+            llmResponse,
+        }),
+        {
+            status: 201,
+            headers: { "content-type": "application/json" },
+        },
+    );
 }
