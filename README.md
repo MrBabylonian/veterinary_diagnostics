@@ -31,7 +31,18 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Branch Protection
 
-This repository has branch protection enabled for the `main` branch. Direct pushes to `main` are not allowed. 
+This repository uses GitHub branch protection rules to prevent direct pushes to the `main` branch.
+
+### Setting Up Branch Protection (Repository Admin Required):
+
+To properly protect the main branch, a repository administrator must configure branch protection rules in GitHub:
+
+1. Go to repository Settings → Branches
+2. Add a branch protection rule for `main`
+3. Enable the following settings:
+   - ☑ Require a pull request before merging
+   - ☑ Require status checks to pass before merging
+   - ☑ Do not allow bypassing the above settings
 
 ### How to contribute:
 
@@ -40,4 +51,4 @@ This repository has branch protection enabled for the `main` branch. Direct push
 3. Push your feature branch to GitHub
 4. Create a pull request to merge your changes into `main`
 
-The GitHub Actions workflow `.github/workflows/protect-main-branch.yml` will automatically reject any direct pushes to the `main` branch.
+**Note**: The GitHub Actions workflow in `.github/workflows/protect-main-branch.yml` serves as a status check that will fail if someone attempts to push directly to main. However, the primary protection comes from the branch protection rules configured in the repository settings.
