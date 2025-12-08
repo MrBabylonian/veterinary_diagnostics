@@ -1,8 +1,8 @@
-"use client";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+'use client';
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Fragment, useState } from "react";
 
 const Upload = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -51,7 +51,8 @@ const Upload = () => {
             }
         } catch (error) {
             // Handle network or other errors
-            setUploadStatus(`Error: ${error instanceof Error ? error.message : "An unknown error occurred"}`);
+            const message = error instanceof Error ? error.message : 'Unknown error';
+            setUploadStatus(`Error: ${message}`);
         }
     };
 
