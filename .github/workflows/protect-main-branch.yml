@@ -8,6 +8,7 @@ on:
 jobs:
   prevent-push:
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: Prevent direct push to main
         run: |
