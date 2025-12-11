@@ -1,7 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { Transport } from "@nestjs/microservices";
 import { AppModule } from "./app.module";
-
+import { getKafkaBrokers } from "./config/kafka.config";
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
@@ -16,7 +16,7 @@ async function bootstrap() {
     const _kafkaService = app.connectMicroservice({
         transport: Transport.KAFKA,
         options: {
-            client: { brokers: (process.env.KAFKA_BROKERS ?? 'localhost:9092').split(',') },
+            client: { brokers: getKafkaBrokers() },
             consumer: { groupId: process.env.KAFKA_GROUP_ID ?? 'authentication-service-group' }
         },
     });
