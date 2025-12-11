@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 import { plainToClass } from 'class-transformer';
@@ -12,17 +12,13 @@ export class AuthService {
         private usersService: UsersService
     ) { }
     /**
-     * Register a user with provided email and password
-     * @param email - user's email
-     * @param password - user's password
-     * @return Promise<User> - the created user
-     * @example
-     * const newUser = await authService.register('user@example.com', 'password');
+     * Register a new user with provided user data
+     * @param userData - CreateUserDto containing user registration information
+     * @returns Promise<{ status: number; registeredUser: UserForPublicDto; }> - status code and registered user public information
+     * @throws {Error} - if user creation fails
      */
-    async register(userData: CreateUserDto): Promise<User> {
-        /**
-         * WORK IN PROGRESS
-         */
+    async register(userData: CreateUserDto): Promise<{ status: number; registeredUser: UserForPublicDto; }> {
+
         const passwordHash = await argon2.hash(userData.password);
 
         const userToCreate = plainToClass(User, {
@@ -31,66 +27,63 @@ export class AuthService {
 
         return this.usersService.create(userToCreate);
     }
+
     /**
-     * Validate a user with email and password
-     * @param email - user's email
-     * @param password - user's password
-     * @returns Promise<UserForPublic | null> - the validated user or null if invalid
+     * Validate a user's credentials with email and password
+     * @param email - user's email address
+     * @param password - user's plain text password
+     * @returns Promise<{ id: string; email: string; }> - user id and email if valid
+     * @throws {NotFoundException} - if user is not found
+     * @throws {UnauthorizedException} - if password is invalid
      */
-    async validateUser(email: string, password: string): Promise<UserForPublic | null> {
-        /**
-         * WORK IN PROGRESS
-         */
-        const userInDb = this.usersService.findByEmail(email);
+    async validateUser(email: string, password: string): Promise<{ id: string; email: string; }> {
+        const userInDb = this.usersService.findByEmailForValidation(email);
 
-        if (!userInDb) return null;
+        const isValid = await argon2.verify(userInDb.password_hash, password);
 
-        const isValid = await argon2.verify(userInDb.passwordHash, password);
+        if (!isValid) throw new UnauthorizedException('Invalid password');
 
-        const user: UserForPublic = {
+        const user = {
             id: userInDb.id,
             email: userInDb.email,
         };
 
-        return isValid ? user : null;
+        return user;
     }
 
     /**
-     * 
-     * @param email - user's email
-     * @param password - user's password
-     * @returns Promise<{ token: string; user: UserForPublic; } | null> - JWT token and user info or null if invalid
+     * Authenticate user and generate JWT token
+     * @param email - user's email address
+     * @param password - user's plain text password
+     * @returns Promise<string> - JWT access token
+     * @throws {NotFoundException} - if user is not found
+     * @throws {UnauthorizedException} - if credentials are invalid
      */
-    async login(email: string, password: string): Promise<{ token: string; user: UserForPublic; } | null> {
-        /**
-         * WORK IN PROGRESS
-         */
+    async login(email: string, password: string): Promise<string> {
         const user = await this.validateUser(email, password);
-        if (!user) return null;
-        const token = await this.generateToken(user);
-        return { token, user };
+
+        const token = await this.generateToken(user.id, user.email);
+        
+        return token;
     }
 
     /**
-     * 
-     * @param user : UserForPublic - the user information (id and email)
-     * @returns Promise<string> - the generated JWT token
+     * Generate a JWT token for authenticated user
+     * @param sub - user's unique identifier (subject)
+     * @param email - user's email address
+     * @returns Promise<string> - signed JWT token
      */
-
-    async generateToken(user: UserForPublic): Promise<string> {
-        /**
-         * WORK IN PROGRESS
-         */
+    async generateToken(sub: string, email: string): Promise<string> {
         return this.jwtService.sign({
-            sub: user.id,
-            email: user.email
+            sub,
+            email
         });
     }
 
     /**
-     * 
-     * @param token - JWT Token
-     * @returns Promise<object | null> - the decoded token payload or null if invalid
+     * Validate and decode a JWT token
+     * @param token - JWT token string to validate
+     * @returns Promise<object | null> - decoded token payload if valid, null if invalid
      */
 
     async validateToken(token: string): Promise<object | null> {
@@ -103,7 +96,3 @@ export class AuthService {
 
 }
 
-async function hashTrial(pass: string) {
-    return argon2.hash(pass);
-}
-console.log(hashTrial("password123"));

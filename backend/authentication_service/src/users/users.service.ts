@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserForPublicDto, type User } from '../dto/user';
 import { UUID } from 'crypto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
+import { CreateUserDto, type User, UserForPublicDto } from '../dto/user';
 
 
 @Injectable()
@@ -27,8 +27,9 @@ export class UsersService {
         }
     ];
 
+    // TODO: Make sure getters are returning UserForPublicDto with plainToClass after implementing database
 
-    findByEmail(email: string): UserForPublicDto | undefined {
+    findByEmail(email: string): UserForPublicDto {
         const user = this.users.find(user => user.email === email);
 
         if (!user) {
@@ -38,8 +39,18 @@ export class UsersService {
         return plainToClass(UserForPublicDto, user, { excludeExtraneousValues: true });
     }
 
+    findByEmailForValidation(email: string): User {
+        const user = this.users.find(user => user.email === email);
+
+        if (!user) {
+            throw new NotFoundException(`User with email ${email} not found`);
+        }
+
+        return user;
+    }
 
     findById(id: string | UUID): UserForPublicDto | undefined {
+
         const user = this.users.find(user => user.id === id);
         if (!user) {
             throw new NotFoundException(`User with id ${id} not found`);
@@ -47,12 +58,12 @@ export class UsersService {
         return plainToClass(UserForPublicDto, user, { excludeExtraneousValues: true });
     }
 
-    create(user: Omit<User, 'id'>): UserForPublicDto {
-        const newUser: User = {
-            id: crypto.randomUUID(),
-            ...user, // email and passwordHash
+    create(userToCreate: User) {
+        this.users.push(userToCreate);
+        const registeredUser = plainToClass(UserForPublicDto, userToCreate, { excludeExtraneousValues: true });
+        return {
+            status: 201,
+            registeredUser
         };
-        this.users.push(newUser);
-        return plainToClass(UserForPublicDto, newUser, { excludeExtraneousValues: true });
     }
 }

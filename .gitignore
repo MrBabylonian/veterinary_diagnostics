@@ -45,3 +45,7 @@ next-env.d.ts
 .turbo
 .github/*
 
+# IDEs and editors
+.vscode/*
+.idea/*
+.amazonq/*
