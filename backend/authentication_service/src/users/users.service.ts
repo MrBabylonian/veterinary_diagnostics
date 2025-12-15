@@ -1,7 +1,7 @@
 import { UUID } from 'crypto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { CreateUserDto, type User, UserForPublicDto } from '../dto/user';
+import { CreateUserDto, type User, UserForPublicDto } from '@workspace/shared/dto/user';
 
 
 @Injectable()
