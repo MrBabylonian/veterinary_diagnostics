@@ -17,6 +17,9 @@
         "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "incremental": true
+        "incremental": true,
+        "noImplicitAny": true,
+        "strictBindCallApply": true,
+        "noFallthroughCasesInSwitch": true
     }
 }

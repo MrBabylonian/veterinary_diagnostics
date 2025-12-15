@@ -19,7 +19,8 @@ frontend/client/.next/dev/logs/next-development.log
 /out/
 
 # NestJS
-**/dist/*
+**/dist/
+dist/
 # production
 /build
 

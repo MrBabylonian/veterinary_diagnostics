@@ -1,5 +1,5 @@
 {
-    "extends": "@workspace/configuration/tsconfig/base.json",
+    "extends": "@workspace/configuration/tsconfig",
     "compilerOptions": {
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
@@ -15,8 +15,8 @@
         "allowSyntheticDefaultImports": true,
         "sourceMap": true,
         "outDir": "./dist",
-        "rootDir": "./src",
+        "rootDir": "./",
         "baseUrl": "./",
-        "noEmit": false,
+        "noEmit": false
     }
 }

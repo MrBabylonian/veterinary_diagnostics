@@ -1,8 +1,8 @@
 import { Controller } from "@nestjs/common";
 import { MessagePattern } from "@nestjs/microservices";
-
+import { CreateUserDto, UserForLoginDto } from "@workspace/shared/dto/user";
 import { AuthService } from "./auth/auth.service";
-import { CreateUserDto, UserForLoginDto } from "./dto/user";
+import { get } from "http";
 
 @Controller()
 export class AppController {
@@ -18,7 +18,7 @@ export class AppController {
         return this.authService.login(credentials);
     }
 
-    @MessagePattern({ cmd: 'auth.validate' })
+    @MessagePattern({ cmd: "auth.validate" })
     async validateToken(payload: { token: string; }) {
         return this.authService.validateToken(payload.token);
     }
