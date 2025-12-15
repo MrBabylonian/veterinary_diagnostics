@@ -1,25 +1,26 @@
 import { NestFactory } from "@nestjs/core";
 import { Transport } from "@nestjs/microservices";
 import { AppModule } from "./app.module";
-import { getKafkaBrokers } from "./config/kafka.config";
+
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     const _tcpService = app.connectMicroservice({
         transport: Transport.TCP,
         options: {
-            host: '0.0.0.0',
+            host: "0.0.0.0",
             port: Number(process.env.TCP_PORT ?? 8877),
-        }
-    });
-
-    const _kafkaService = app.connectMicroservice({
-        transport: Transport.KAFKA,
-        options: {
-            client: { brokers: getKafkaBrokers() },
-            consumer: { groupId: process.env.KAFKA_GROUP_ID ?? 'authentication-service-group' }
         },
     });
+
+    // TODO: Enable Kafka microservice when needed
+    // const _kafkaService = app.connectMicroservice({
+    //     transport: Transport.KAFKA,
+    //     options: {
+    //         client: { brokers: getKafkaBrokers() },
+    //         consumer: { groupId: process.env.KAFKA_GROUP_ID ?? 'authentication-service-group' }
+    //     },
+    // });
 
     await app.startAllMicroservices();
     await app.init();
