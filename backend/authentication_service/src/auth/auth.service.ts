@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 import { plainToClass } from 'class-transformer';
-import { CreateUserDto, User, UserForPublicDto } from 'src/dto/user';
+import { CreateUserDto, User, UserForLoginDto, UserForPublicDto } from 'src/dto/user';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -59,11 +59,11 @@ export class AuthService {
      * @throws {NotFoundException} - if user is not found
      * @throws {UnauthorizedException} - if credentials are invalid
      */
-    async login(email: string, password: string): Promise<string> {
-        const user = await this.validateUser(email, password);
+    async login(credentials: UserForLoginDto): Promise<string> {
+        const user = await this.validateUser(credentials.email, credentials.password);
 
         const token = await this.generateToken(user.id, user.email);
-        
+
         return token;
     }
 
@@ -72,6 +72,7 @@ export class AuthService {
      * @param sub - user's unique identifier (subject)
      * @param email - user's email address
      * @returns Promise<string> - signed JWT token
+     * @throws {Error} - if JWT signing fails (invalid secret or payload)
      */
     async generateToken(sub: string, email: string): Promise<string> {
         return this.jwtService.sign({
@@ -84,6 +85,7 @@ export class AuthService {
      * Validate and decode a JWT token
      * @param token - JWT token string to validate
      * @returns Promise<object | null> - decoded token payload if valid, null if invalid
+     * @throws {Error} - if token verification fails (invalid secret or token)
      */
 
     async validateToken(token: string): Promise<object | null> {

@@ -3,6 +3,7 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
 import { AppController } from "./app.controller";
 import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from "./users/users.module";
+import { getKafkaBrokers } from "./config/kafka.config";
 
 @Module({
     imports: [
@@ -11,7 +12,7 @@ import { UsersModule } from "./users/users.module";
                 name: "KAFKA_PRODUCER",
                 transport: Transport.KAFKA,
                 options: {
-                    client: { brokers: (process.env.KAFKA_BROKERS ?? 'localhost:9092').split(',') }
+                    client: { brokers: getKafkaBrokers() }
                 }
             }
         ]),

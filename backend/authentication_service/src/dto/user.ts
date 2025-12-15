@@ -1,13 +1,20 @@
-import type { UUID } from 'crypto';
-import { PickType } from '@nestjs/mapped-types';
-import { IsBoolean, IsEmail, IsEnum, IsISO8601, IsLocale, IsNotEmpty, IsObject, IsOptional, IsPhoneNumber, IsString, IsStrongPassword, IsTimeZone, IsUrl, MinLength } from 'class-validator';
-import { Expose } from 'class-transformer';
+import type { UUID } from "node:crypto";
+import { PickType } from "@nestjs/mapped-types";
+import { Expose } from "class-transformer";
+import {
+    IsEmail,
+    IsNotEmpty,
+    IsOptional,
+    IsPhoneNumber,
+    IsString,
+    IsStrongPassword,
+    MinLength,
+} from "class-validator";
 
 /**
- * User entity representing a user in the system
+ * User entity representing a user in the systems
  */
 export class User {
-
     id!: UUID;
 
     @Expose()
@@ -51,13 +58,19 @@ export class User {
 /**
  * DTO for public user information
  */
-export class UserForPublicDto extends PickType(User, ['email', 'phone_number', 'name', 'middle_name', 'last_name', 'avatar_url']) { }
+export class UserForPublicDto extends PickType(User, [
+    "email",
+    "phone_number",
+    "name",
+    "middle_name",
+    "last_name",
+    "avatar_url",
+]) { }
 
 /**
  * DTO for creating a new user
  */
 export class CreateUserDto {
-
     @IsEmail()
     @IsNotEmpty()
     email!: string;
@@ -92,4 +105,7 @@ export class CreateUserDto {
 /**
  * DTO for user login
  */
-export class UserForLoginDto extends PickType(CreateUserDto, ['email', 'password']) { }
+export class UserForLoginDto extends PickType(CreateUserDto, [
+    "email",
+    "password",
+]) { }
