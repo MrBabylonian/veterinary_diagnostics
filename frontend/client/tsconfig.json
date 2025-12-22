@@ -1,5 +1,5 @@
 {
-	"extends": "@veterinary/configuration/tsconfig",
+	"extends": "@workspace/configuration/tsconfig",
 	"compilerOptions": {
 		"jsx": "react-jsx",
 		"baseUrl": ".",

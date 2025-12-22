@@ -22,12 +22,18 @@
             "style": {
                 "useImportType": "off",
                 "noInferrableTypes": "off"
+            },
+            "nursery": {
+                "noInvalidUseBeforeDeclaration": "error"
             }
         }
     },
     "javascript": {
         "formatter": {
             "quoteStyle": "double"
+        },
+        "parser": {
+            "unsafeParameterDecoratorsEnabled": true
         }
     },
     "css": {

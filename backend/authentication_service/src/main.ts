@@ -8,12 +8,12 @@ async function bootstrap() {
     const _tcpService = app.connectMicroservice({
         transport: Transport.TCP,
         options: {
-            host: "0.0.0.0",
-            port: Number(process.env.TCP_PORT ?? 8877),
+            host: process.env.AUTH_SERVICE_TCP_HOST,
+            port: Number(process.env.AUTH_SERVICE_TCP_PORT ?? 8877),
         },
     });
 
-    // TODO: Enable Kafka microservice when needed
+    // TODO: 
     // const _kafkaService = app.connectMicroservice({
     //     transport: Transport.KAFKA,
     //     options: {
