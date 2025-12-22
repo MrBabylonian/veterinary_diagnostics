@@ -2,24 +2,23 @@ import { Controller } from "@nestjs/common";
 import { MessagePattern } from "@nestjs/microservices";
 import { CreateUserDto, UserForLoginDto } from "@workspace/shared/dto/user";
 import { AuthService } from "./auth/auth.service";
-import { get } from "http";
 
 @Controller()
 export class AppController {
-    constructor(private readonly authService: AuthService) { }
+	constructor(private readonly authService: AuthService) {}
 
-    @MessagePattern({ cmd: "auth.register" })
-    async register(userData: CreateUserDto) {
-        return this.authService.register(userData);
-    }
+	@MessagePattern({ cmd: "auth.register" })
+	async register(userData: CreateUserDto) {
+		return this.authService.register(userData);
+	}
 
-    @MessagePattern({ cmd: "auth.login" })
-    async login(credentials: UserForLoginDto) {
-        return this.authService.login(credentials);
-    }
+	@MessagePattern({ cmd: "auth.login" })
+	async login(credentials: UserForLoginDto) {
+		return this.authService.login(credentials);
+	}
 
-    @MessagePattern({ cmd: "auth.validate" })
-    async validateToken(payload: { token: string; }) {
-        return this.authService.validateToken(payload.token);
-    }
+	@MessagePattern({ cmd: "auth.validate" })
+	async validateToken(payload: { token: string }) {
+		return this.authService.validateToken(payload.token);
+	}
 }

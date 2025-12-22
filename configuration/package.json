@@ -1,11 +1,11 @@
 {
-    "name": "@workspace/configuration",
-    "version": "1.0.0",
-    "private": true,
-    "type": "module",
-    "main": "./tsconfig/base.json",
-    "exports": {
-        "./tsconfig": "./tsconfig/base.json",
-        "./tsconfig/base.json": "./tsconfig/base.json"
-    }
+	"name": "@workspace/configuration",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"main": "./tsconfig/base.json",
+	"exports": {
+		"./tsconfig": "./tsconfig/base.json",
+		"./tsconfig/base.json": "./tsconfig/base.json"
+	}
 }
