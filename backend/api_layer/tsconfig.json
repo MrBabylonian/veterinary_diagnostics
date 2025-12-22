@@ -1,5 +1,5 @@
 {
-    "extends": "@workspace/configuration/tsconfig/base.json",
+    "extends": "@workspace/configuration/tsconfig",
     "compilerOptions": {
         "module": "NodeNext",
         "moduleResolution": "NodeNext",

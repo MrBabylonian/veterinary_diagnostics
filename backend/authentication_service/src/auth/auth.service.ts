@@ -1,15 +1,20 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import * as argon2 from 'argon2';
-import { plainToClass } from 'class-transformer';
-import { CreateUserDto, User, UserForLoginDto, UserForPublicDto } from 'src/dto/user';
-import { UsersService } from 'src/users/users.service';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import {
+    CreateUserDto,
+    User,
+    UserForLoginDto,
+    UserForPublicDto,
+} from "@workspace/shared/dto/user";
+import * as argon2 from "argon2";
+import { plainToClass } from "class-transformer";
+import { UsersService } from "src/users/users.service";
 
 @Injectable()
 export class AuthService {
     constructor(
         private jwtService: JwtService,
-        private usersService: UsersService
+        private usersService: UsersService,
     ) { }
     /**
      * Register a new user with provided user data
@@ -17,13 +22,19 @@ export class AuthService {
      * @returns Promise<{ status: number; registeredUser: UserForPublicDto; }> - status code and registered user public information
      * @throws {Error} - if user creation fails
      */
-    async register(userData: CreateUserDto): Promise<{ status: number; registeredUser: UserForPublicDto; }> {
-
+    async register(
+        userData: CreateUserDto,
+    ): Promise<{ status: number; registeredUser: UserForPublicDto; }> {
         const passwordHash = await argon2.hash(userData.password);
 
-        const userToCreate = plainToClass(User, {
-            ...userData, password_hash: passwordHash
-        }, { excludeExtraneousValues: true });
+        const userToCreate = plainToClass(
+            User,
+            {
+                ...userData,
+                password_hash: passwordHash,
+            },
+            { excludeExtraneousValues: true },
+        );
 
         return this.usersService.create(userToCreate);
     }
@@ -36,12 +47,15 @@ export class AuthService {
      * @throws {NotFoundException} - if user is not found
      * @throws {UnauthorizedException} - if password is invalid
      */
-    async validateUser(email: string, password: string): Promise<{ id: string; email: string; }> {
+    async validateUser(
+        email: string,
+        password: string,
+    ): Promise<{ id: string; email: string; }> {
         const userInDb = this.usersService.findByEmailForValidation(email);
 
         const isValid = await argon2.verify(userInDb.password_hash, password);
 
-        if (!isValid) throw new UnauthorizedException('Invalid password');
+        if (!isValid) throw new UnauthorizedException("Invalid password");
 
         const user = {
             id: userInDb.id,
@@ -53,14 +67,16 @@ export class AuthService {
 
     /**
      * Authenticate user and generate JWT token
-     * @param email - user's email address
-     * @param password - user's plain text password
+     * @param credentials - UserForLoginDto containing email and password
      * @returns Promise<string> - JWT access token
      * @throws {NotFoundException} - if user is not found
      * @throws {UnauthorizedException} - if credentials are invalid
      */
     async login(credentials: UserForLoginDto): Promise<string> {
-        const user = await this.validateUser(credentials.email, credentials.password);
+        const user = await this.validateUser(
+            credentials.email,
+            credentials.password,
+        );
 
         const token = await this.generateToken(user.id, user.email);
 
@@ -77,7 +93,7 @@ export class AuthService {
     async generateToken(sub: string, email: string): Promise<string> {
         return this.jwtService.sign({
             sub,
-            email
+            email,
         });
     }
 
@@ -95,6 +111,4 @@ export class AuthService {
             return null;
         }
     }
-
 }
-
