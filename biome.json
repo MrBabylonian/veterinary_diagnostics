@@ -17,14 +17,13 @@
         "rules": {
             "recommended": true,
             "correctness": {
-                "noUnusedVariables": "error"
+                "noUnusedImports": "error",
+                "noUnusedPrivateClassMembers": "off",
+                "noUnusedFunctionParameters": "off"
             },
             "style": {
                 "useImportType": "off",
                 "noInferrableTypes": "off"
-            },
-            "nursery": {
-                "noInvalidUseBeforeDeclaration": "error"
             }
         }
     },
