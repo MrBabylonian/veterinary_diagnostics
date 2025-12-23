@@ -10,7 +10,7 @@ import { ApiAuthController } from "./api.auth.controller";
 				transport: Transport.TCP,
 				options: {
 					host: process.env.AUTH_SERVICE_TCP_HOST || "localhost",
-					port: parseInt(process.env.AUTH_SERVICE_TCP_PORT, 10) || 8877,
+					port: parseInt(process.env.AUTH_SERVICE_TCP_PORT || "8877", 10),
 				},
 			},
 		]),
