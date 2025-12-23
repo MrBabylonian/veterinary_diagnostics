@@ -1,9 +1,15 @@
 import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
 import { ApiAuthModule } from "./api_auth/api.auth.module";
-import { DatabaseService } from './database/database.service';
-import { DatabaseModule } from './database/database.module';
+import { DatabaseModule } from "./database/database.module";
 @Module({
-	imports: [ApiAuthModule, DatabaseModule],
-	providers: [DatabaseService],
+    imports: [
+        ApiAuthModule,
+        DatabaseModule,
+        ConfigModule.forRoot({
+            envFilePath: '../../.env.development',
+            isGlobal: true,
+        })
+    ],
 })
-export class AppModule {}
+export class AppModule { }

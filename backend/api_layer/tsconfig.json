@@ -1,22 +1,27 @@
 {
-	"extends": "@workspace/configuration/tsconfig",
-	"compilerOptions": {
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
-		"resolvePackageJsonExports": true,
-		"target": "ES2023",
-		"lib": ["ES2023"],
-		"declaration": true,
-		"removeComments": true,
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"allowSyntheticDefaultImports": true,
-		"sourceMap": true,
-		"outDir": "./dist",
-		"rootDir": "./src",
-		"baseUrl": "./",
-		"noEmit": false,
-		"incremental": false
-	},
-	"exclude": ["test/**/*", "dist/**/*"]
+    "extends": "@workspace/configuration/tsconfig/base.json",
+    "compilerOptions": {
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "resolvePackageJsonExports": true,
+        "target": "ES2023",
+        "lib": [
+            "ES2023"
+        ],
+        "declaration": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "baseUrl": "./",
+        "noEmit": false,
+        "incremental": false
+    },
+    "exclude": [
+        "test/**/*",
+        "dist/**/*"
+    ]
 }

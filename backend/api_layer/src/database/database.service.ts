@@ -1,6 +1,5 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Pool } from 'pg';
-
 @Injectable()
 export class DatabaseService implements OnModuleInit, OnModuleDestroy {
     private pool!: Pool;
@@ -23,13 +22,27 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
      */
     async onModuleInit() {
         this.pool = new Pool({
-            host: 'localhost',
-            port: 5432,
-            database: 'veterinary_diagnostics',
-            user: 'vet_user',
-            password: 'vet_password',
+            host: process.env.POSTGRES_HOST,
+            // biome-ignore lint/style/noNonNullAssertion: <It's for the database>
+            port: Number(process.env.POSTGRES_PORT!),
+            database: process.env.POSTGRES_DATABASE,
+            user: process.env.POSTGRES_USER,
+            password: process.env.POSTGRES_DATABASE_PASSWORD,
             max: 10,
         });
+
+        try {
+            // Validate the connection on startup
+            const client = await this.pool.connect();
+            await client.query('SELECT 1');
+            client.release();
+        }
+        catch (_error) {
+            await this.pool.end();
+            throw new InternalServerErrorException(
+                "Initial connection to PostgreSQL database failed"
+            );
+        }
     }
 
     /**
