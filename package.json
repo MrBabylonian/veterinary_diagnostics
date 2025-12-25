@@ -18,6 +18,9 @@
 		"frontend/*"
 	],
 	"packageManager": "npm@11.6.4",
+	"engines": {
+		"node": ">=25.0.0"
+	},
 	"dependencies": {
 		"@google/genai": "^1.31.0",
 		"@nestjs/common": "^11.1.9",
