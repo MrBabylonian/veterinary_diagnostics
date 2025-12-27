@@ -21,10 +21,17 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
      * @returns void
      */
     async onModuleInit() {
+        const requiredEnvVars = ["POSTGRES_HOST", "POSTGRES_PORT", "POSTGRES_DATABASE", "POSTGRES_USER", "POSTGRES_DATABASE_PASSWORD"];
+        const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+        if (missingEnvVars.length > 0) {
+            throw new InternalServerErrorException(
+                `Missing required environment variables ${missingEnvVars.join(', ')}`
+            );
+        }
         this.pool = new Pool({
             host: process.env.POSTGRES_HOST,
-            // biome-ignore lint/style/noNonNullAssertion: <It's for the database>
-            port: Number(process.env.POSTGRES_PORT!),
+            port: Number(process.env.POSTGRES_PORT),
             database: process.env.POSTGRES_DATABASE,
             user: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_DATABASE_PASSWORD,
@@ -37,10 +44,11 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
             await client.query('SELECT 1');
             client.release();
         }
-        catch (_error) {
+        catch (error) {
             await this.pool.end();
+            const message = error instanceof Error ? error.message : String(error);
             throw new InternalServerErrorException(
-                "Initial connection to PostgreSQL database failed"
+                `Initial connection to PostgreSQL database failed ${message}`
             );
         }
     }

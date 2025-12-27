@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link
+			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+			rel="stylesheet">
+	<script>
+	  tailwind.config = {
+		  theme: {
+			  extend: {
+				  fontFamily: {
+					  sans: ['Space Grotesk', 'sans-serif'],
+					  mono: ['JetBrains Mono', 'monospace'],
+				  },
+				  colors: {
+					  void: '#020408',
+					  cyan: '#00F0FF',
+					  violet: '#7C3AED',
+				  },
+				  animation: {
+					  'float': 'float 8s ease-in-out infinite',
+					  'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+					  'scan': 'scan 4s linear infinite',
+				  },
+				  keyframes: {
+					  float: {
+						  '0%, 100%': {transform: 'translateY(0)'},
+						  '50%': {transform: 'translateY(-20px)'},
+					  },
+					  pulseGlow: {
+						  '0%, 100%': {opacity: 0.5, transform: 'scale(1)'},
+						  '50%': {opacity: 1, transform: 'scale(1.1)'},
+					  },
+					  scan: {
+						  '0%': {top: '0%'},
+						  '100%': {top: '100%'},
+					  }
+				  }
+			  }
+		  }
+	  }
+	</script>
+	<style>
+      /* The Cyber Grid Background */
+      .cyber-grid {
+          background-size: 50px 50px;
+          background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+          mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+          -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+      }
+
+      /* 3D Perspective Container */
+      .perspective-container {
+          perspective: 2000px;
+      }
+
+      /* The Tilted Interface */
+      .hero-interface {
+          transform: rotateX(20deg) rotateY(-10deg) rotateZ(5deg);
+          box-shadow: -20px 20px 60px rgba(0, 0, 0, 0.5),
+          0 0 50px rgba(124, 58, 237, 0.2); /* Violet Glow */
+          transition: transform 0.5s ease-out;
+      }
+
+      .hero-interface:hover {
+          transform: rotateX(10deg) rotateY(-5deg) rotateZ(2deg) scale(1.02);
+      }
+
+      .text-gradient {
+          background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+      }
+
+      .text-gradient-accent {
+          background: linear-gradient(135deg, #00F0FF 0%, #7C3AED 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+      }
+
+      /* Glass Cards */
+      .glass-card {
+          background: rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .glass-card:hover {
+          border-color: rgba(0, 240, 255, 0.3);
+          background: rgba(255, 255, 255, 0.05);
+          box-shadow: 0 0 30px rgba(0, 240, 255, 0.1);
+      }
+	</style>
+</head>
+<body class="bg-void text-slate-300 font-sans overflow-x-hidden">
+
+<!-- Background Layers -->
+<div class="fixed inset-0 cyber-grid z-0 pointer-events-none"></div>
+<div
+		class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-violet-600/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
+
+<!-- NAVBAR (Floating Glass) -->
+<nav class="fixed top-6 left-0 right-0 z-50 flex justify-center">
+	<div class="glass-card rounded-full px-6 py-3 flex items-center gap-12">
+		<!-- Logo -->
+		<div class="flex items-center gap-2 font-bold text-white tracking-wide">
+			<div
+					class="w-6 h-6 rounded bg-gradient-to-br from-cyan to-violet flex items-center justify-center">
+				<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor"
+				     viewBox="0 0 24 24">
+					<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="3"/>
+				</svg>
+			</div>
+			VetAI
+		</div>
+
+		<!-- Links -->
+		<div class="hidden md:flex gap-8 text-sm font-medium text-slate-400">
+			<a class="hover:text-white transition" href="#">Features</a>
+			<a class="hover:text-white transition" href="#">Accuracy</a>
+			<a class="hover:text-white transition" href="#">Integration</a>
+		</div>
+
+		<!-- CTA -->
+		<button
+				class="bg-white/10 hover:bg-white/20 text-white text-xs font-mono py-2 px-4 rounded-full border border-white/10 transition uppercase tracking-wider">
+			Book Demo
+		</button>
+	</div>
+</nav>
+
+<!-- HERO SECTION -->
+<section
+		class="relative z-10 pt-40 pb-20 min-h-screen flex flex-col items-center justify-center">
+
+	<!-- Text Content -->
+	<div class="text-center max-w-4xl px-6 mb-16">
+		<div
+				class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan/30 bg-cyan/5 text-cyan text-xs font-mono mb-6 uppercase tracking-widest">
+			<span class="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse"></span>
+			v2.0 Neural Engine Live
+		</div>
+
+		<h1 class="text-6xl md:text-7xl font-bold leading-tight mb-6 tracking-tight">
+			<span class="text-gradient">Superhuman Diagnostics</span><br>
+			<span class="text-gradient-accent">for Veterinary Medicine.</span>
+		</h1>
+
+		<p class="text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+			Transform raw bloodwork into actionable therapy plans in seconds.
+			The first AI designed to see what the human eye might miss.
+		</p>
+
+		<div class="flex flex-col md:flex-row items-center justify-center gap-4">
+			<button
+					class="px-8 py-4 bg-white text-void font-bold rounded-xl hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] hover:scale-105 transition duration-300">
+				Get Early Access
+			</button>
+			<button
+					class="px-8 py-4 glass-card text-white font-medium rounded-xl flex items-center gap-2 hover:bg-white/10 transition">
+				<svg class="w-5 h-5 text-cyan" fill="none" stroke="currentColor"
+				     viewBox="0 0 24 24">
+					<path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="2"></path>
+					<path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="2"></path>
+				</svg>
+				Watch Workflow
+			</button>
+		</div>
+	</div>
+
+	<!-- 3D HERO VISUAL (The Dashboard Tilting) -->
+	<div class="perspective-container w-full max-w-5xl px-6 animate-float">
+		<!-- This represents the Dashboard screenshot tilted -->
+		<div
+				class="hero-interface relative bg-[#0F172A] rounded-2xl border border-white/10 overflow-hidden aspect-video">
+
+			<!-- Fake Dashboard UI (Visual Placeholder) -->
+			<div class="absolute inset-0 flex">
+				<!-- Sidebar -->
+				<div class="w-16 border-r border-white/5 bg-slate-900/50"></div>
+				<!-- Content -->
+				<div class="flex-1 p-6 relative">
+					<!-- Header -->
+					<div class="flex justify-between mb-8">
+						<div class="w-32 h-4 bg-white/10 rounded"></div>
+						<div
+								class="w-24 h-8 bg-red-500/20 rounded border border-red-500/50"></div>
+					</div>
+					<!-- Grid of Data -->
+					<div class="space-y-3">
+						<div
+								class="h-12 w-full bg-white/5 rounded border border-white/5 flex items-center px-4 justify-between">
+							<div class="w-20 h-2 bg-white/20 rounded"></div>
+							<div
+									class="w-32 h-2 bg-red-500 rounded shadow-[0_0_10px_red]"></div>
+						</div>
+						<div
+								class="h-12 w-full bg-white/5 rounded border border-white/5 flex items-center px-4 justify-between">
+							<div class="w-20 h-2 bg-white/20 rounded"></div>
+							<div class="w-24 h-2 bg-cyan/50 rounded"></div>
+						</div>
+						<div
+								class="h-12 w-full bg-white/5 rounded border border-white/5 flex items-center px-4 justify-between">
+							<div class="w-20 h-2 bg-white/20 rounded"></div>
+							<div class="w-40 h-2 bg-cyan/50 rounded"></div>
+						</div>
+					</div>
+
+					<!-- Floating Holographic Card (Right Side) -->
+					<div
+							class="absolute top-6 right-6 w-64 h-full bg-black/60 backdrop-blur-xl border border-violet-500/40 rounded-xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+						<div class="w-8 h-8 bg-violet-600 rounded mb-4"></div>
+						<div class="w-full h-2 bg-white/20 rounded mb-2"></div>
+						<div class="w-2/3 h-2 bg-white/20 rounded mb-4"></div>
+						<div
+								class="w-full h-20 bg-gradient-to-b from-violet-500/10 to-transparent rounded border border-violet-500/20"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Reflection Overlay -->
+			<div
+					class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none"></div>
+		</div>
+	</div>
+
+</section>
+
+<!-- FEATURES GRID -->
+<section class="py-24 px-6 relative z-10">
+	<div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+
+		<!-- Card 1 -->
+		<div class="glass-card p-8 rounded-3xl group cursor-default">
+			<div
+					class="w-12 h-12 rounded-xl bg-cyan/10 border border-cyan/20 flex items-center justify-center text-cyan mb-6 group-hover:scale-110 transition">
+				<svg class="w-6 h-6" fill="none" stroke="currentColor"
+				     viewBox="0 0 24 24">
+					<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="2"/>
+				</svg>
+			</div>
+			<h3 class="text-xl font-bold text-white mb-2 font-sans">Instant
+				Analysis</h3>
+			<p class="text-slate-400 leading-relaxed">Upload PDF reports or connect
+				directly to IDEXX/Antech analyzers. Get results in <span
+						class="text-cyan font-mono">0.4s</span>.</p>
+		</div>
+
+		<!-- Card 2 -->
+		<div class="glass-card p-8 rounded-3xl group cursor-default">
+			<div
+					class="w-12 h-12 rounded-xl bg-violet/10 border border-violet/20 flex items-center justify-center text-violet-400 mb-6 group-hover:scale-110 transition">
+				<svg class="w-6 h-6" fill="none" stroke="currentColor"
+				     viewBox="0 0 24 24">
+					<path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="2"/>
+				</svg>
+			</div>
+			<h3 class="text-xl font-bold text-white mb-2 font-sans">Predictive AI</h3>
+			<p class="text-slate-400 leading-relaxed">Our model detects patterns in
+				early-stage renal and hepatic failure often missed by standard reference
+				ranges.</p>
+		</div>
+
+		<!-- Card 3 -->
+		<div class="glass-card p-8 rounded-3xl group cursor-default">
+			<div
+					class="w-12 h-12 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-500 mb-6 group-hover:scale-110 transition">
+				<svg class="w-6 h-6" fill="none" stroke="currentColor"
+				     viewBox="0 0 24 24">
+					<path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="2"/>
+				</svg>
+			</div>
+			<h3 class="text-xl font-bold text-white mb-2 font-sans">Auto-Treatment
+				Plans</h3>
+			<p class="text-slate-400 leading-relaxed">Don't just diagnose. Generate
+				client-ready therapy protocols and diet recommendations instantly.</p>
+		</div>
+
+	</div>
+</section>
+
+<!-- FOOTER -->
+<footer
+		class="border-t border-white/5 py-12 text-center text-slate-600 text-sm">
+	<p>&copy; 2025 VetAI Diagnostics. Engineered for the future of care.</p>
+</footer>
+
+</body>
+</html>
