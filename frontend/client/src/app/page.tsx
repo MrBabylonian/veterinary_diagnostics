@@ -1,9 +1,12 @@
-import { Upload } from "../components/Upload";
+// app/page.tsx
+import { Hero } from "@/components/landing/Hero";
+import { Navbar } from "@/components/landing/Navbar";
 
 export default function Home() {
-	return (
-		<div className="text-4xl">
-			<Upload></Upload>
-		</div>
-	);
+  return (
+    <div>
+      <Navbar />
+      <Hero />
+    </div>
+  );
 }
