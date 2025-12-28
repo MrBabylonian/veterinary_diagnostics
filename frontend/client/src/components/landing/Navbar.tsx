@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export const Navbar = () => {
   return (
@@ -48,7 +49,7 @@ export const Navbar = () => {
         {/* Links */}
         <div
           className={cn(
-            "hidden md:flex gap-8 text-sm font-medium",
+            "hidden md:flex gap-8 text-sm",
             "text-slate-500 dark:text-slate-400",
           )}
         >
@@ -73,7 +74,7 @@ export const Navbar = () => {
         </div>
 
         {/* CTA */}
-        <button
+        <Button
           className={cn(
             "bg-slate-900 hover:bg-slate-800 text-white",
             "text-xs font-mono py-2 px-4 rounded-full",
@@ -84,7 +85,7 @@ export const Navbar = () => {
           )}
         >
           Book Demo
-        </button>
+        </Button>
       </div>
     </nav>
   );

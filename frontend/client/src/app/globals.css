@@ -46,8 +46,53 @@
     @apply border-border;
   }
 
+  /*html {*/
+  /*  letter-spacing: 0.09em;*/
+  /*}*/
+
   body {
     @apply bg-background text-foreground font-sans;
+  }
+
+  /* Typography Defaults */
+  h1 {
+    font-family: var(--font-sans);
+    font-weight: 300; /* Light */
+  }
+
+  h2, h3 {
+    font-family: var(--font-sans);
+    font-weight: 700; /* Bold */
+  }
+
+  p {
+    font-family: var(--font-sans);
+    font-weight: 400; /* Normal */
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button, a, nav a {
+    font-family: var(--font-sans);
+    font-weight: 400; /* Medium */
+  }
+
+  code, pre {
+    font-family: var(--font-mono);
+    font-weight: 400; /* Normal */
+  }
+
+  /* Data Element Utilities */
+  .data-label {
+    font-family: var(--font-mono);
+    font-weight: 400; /* Normal */
+  }
+
+  .data-value {
+    font-family: var(--font-mono);
+    font-weight: 500; /* Medium */
   }
 }
 
