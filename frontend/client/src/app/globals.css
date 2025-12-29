@@ -76,7 +76,7 @@
 
   button, a, nav a {
     font-family: var(--font-sans);
-    font-weight: 400; /* Medium */
+    font-weight: 400; /* Normal */
   }
 
   code, pre {
