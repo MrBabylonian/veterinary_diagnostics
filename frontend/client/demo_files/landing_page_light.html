@@ -7,100 +7,100 @@
 			href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
 			rel="stylesheet">
 	<script>
-	  tailwind.config = {
-		  theme: {
-			  extend: {
-				  fontFamily: {
-					  sans: ['Space Grotesk', 'sans-serif'],
-					  mono: ['JetBrains Mono', 'monospace'],
-				  },
-				  colors: {
-					  vapor: '#F8FAFC',
-					  cyan: '#06B6D4', /* Darker for light mode visibility */
-					  violet: '#7C3AED',
-					  slate: {
-						  850: '#1e293b'
-					  }
-				  },
-				  animation: {
-					  'float': 'float 8s ease-in-out infinite',
-					  'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
-				  },
-				  keyframes: {
-					  float: {
-						  '0%, 100%': {transform: 'translateY(0)'},
-						  '50%': {transform: 'translateY(-20px)'},
-					  }
-				  }
-			  }
-		  }
-	  }
+		tailwind.config = {
+			theme: {
+				extend: {
+					fontFamily: {
+						sans: ['Space Grotesk', 'sans-serif'],
+						mono: ['JetBrains Mono', 'monospace'],
+					},
+					colors: {
+						vapor: '#F8FAFC',
+						cyan: '#06B6D4', /* Darker for light mode visibility */
+						violet: '#7C3AED',
+						slate: {
+							850: '#1E293B'
+						}
+					},
+					animation: {
+						'float': 'float 8s ease-in-out infinite',
+						'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+					},
+					keyframes: {
+						float: {
+							'0%, 100%': {transform: 'translateY(0)'},
+							'50%': {transform: 'translateY(-20px)'},
+						}
+					}
+				}
+			}
+		};
 	</script>
 	<style>
-      /* The Engineering Grid Background (Subtle Grey) */
-      .tech-grid {
-          background-size: 60px 60px;
-          background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-          mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
-          -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
-      }
+    /* The Engineering Grid Background (Subtle Grey) */
+    .tech-grid {
+      background-size: 60px 60px;
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+      mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+    }
 
-      /* Ambient Aurora Blobs */
-      .aurora-bg {
-          background: radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.08), transparent 50%),
-          radial-gradient(circle at 80% 10%, rgba(124, 58, 237, 0.08), transparent 50%);
-      }
+    /* Ambient Aurora Blobs */
+    .aurora-bg {
+      background: radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.08), transparent 50%),
+      radial-gradient(circle at 80% 10%, rgba(124, 58, 237, 0.08), transparent 50%);
+    }
 
-      /* 3D Perspective Container */
-      .perspective-container {
-          perspective: 2000px;
-      }
+    /* 3D Perspective Container */
+    .perspective-container {
+      perspective: 2000px;
+    }
 
-      /* The Tilted Interface (Light Mode Version) */
-      .hero-interface {
-          transform: rotateX(20deg) rotateY(-10deg) rotateZ(5deg);
-          background: rgba(255, 255, 255, 0.8);
-          border: 1px solid rgba(255, 255, 255, 1);
-          /* Prism Shadow: Multilayered soft shadows */
-          box-shadow: 0 50px 100px -20px rgba(50, 50, 93, 0.1),
-          0 30px 60px -30px rgba(0, 0, 0, 0.1),
-          inset 0 0 0 2px rgba(255, 255, 255, 0.5);
-          transition: transform 0.5s ease-out;
-      }
+    /* The Tilted Interface (Light Mode Version) */
+    .hero-interface {
+      transform: rotateX(20deg) rotateY(-10deg) rotateZ(5deg);
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 1);
+      /* Prism Shadow: Multilayered soft shadows */
+      box-shadow: 0 50px 100px -20px rgba(50, 50, 93, 0.1),
+      0 30px 60px -30px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+      transition: transform 0.5s ease-out;
+    }
 
-      .hero-interface:hover {
-          transform: rotateX(10deg) rotateY(-5deg) rotateZ(2deg) scale(1.02);
-          box-shadow: 0 60px 120px -20px rgba(124, 58, 237, 0.15); /* Violet glow on hover */
-      }
+    .hero-interface:hover {
+      transform: rotateX(10deg) rotateY(-5deg) rotateZ(2deg) scale(1.02);
+      box-shadow: 0 60px 120px -20px rgba(124, 58, 237, 0.15); /* Violet glow on hover */
+    }
 
-      /* Gradient Text */
-      .text-gradient {
-          background: linear-gradient(135deg, #0F172A 0%, #475569 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-      }
+    /* Gradient Text */
+    .text-gradient {
+      background: linear-gradient(135deg, #0F172A 0%, #475569 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-      .text-gradient-accent {
-          background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-      }
+    .text-gradient-accent {
+      background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-      /* Frosted Glass Cards (Ice Effect) */
-      .glass-card {
-          background: rgba(255, 255, 255, 0.7);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.8);
-          box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
-      }
+    /* Frosted Glass Cards (Ice Effect) */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+    }
 
-      .glass-card:hover {
-          background: rgba(255, 255, 255, 0.9);
-          box-shadow: 0 20px 40px -10px rgba(124, 58, 237, 0.1);
-          transform: translateY(-5px);
-          transition: all 0.3s ease;
-      }
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 20px 40px -10px rgba(124, 58, 237, 0.1);
+      transform: translateY(-5px);
+      transition: all 0.3s ease;
+    }
 	</style>
 </head>
 <body class="bg-vapor text-slate-600 font-sans overflow-x-hidden">
@@ -117,10 +117,10 @@
 		<div class="flex items-center gap-2 font-bold text-slate-900 tracking-wide">
 			<div
 					class="w-6 h-6 rounded bg-gradient-to-br from-cyan to-violet flex items-center justify-center text-white shadow-md shadow-cyan-500/20">
-				<svg class="w-3 h-3" fill="none" viewBox="0 0 24 24"
-				     stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-					      d="M13 10V3L4 14h7v7l9-11h-7z"/>
+				<svg class="w-3 h-3" fill="none" stroke="currentColor"
+				     viewBox="0 0 24 24">
+					<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="3"/>
 				</svg>
 			</div>
 			VetAI
@@ -128,9 +128,9 @@
 
 		<!-- Links -->
 		<div class="hidden md:flex gap-8 text-sm font-medium text-slate-500">
-			<a href="#" class="hover:text-slate-900 transition">Features</a>
-			<a href="#" class="hover:text-slate-900 transition">Accuracy</a>
-			<a href="#" class="hover:text-slate-900 transition">Integration</a>
+			<a class="hover:text-slate-900 transition" href="#">Features</a>
+			<a class="hover:text-slate-900 transition" href="#">Accuracy</a>
+			<a class="hover:text-slate-900 transition" href="#">Integration</a>
 		</div>
 
 		<!-- CTA -->
@@ -170,12 +170,12 @@
 			</button>
 			<button
 					class="px-8 py-4 bg-white border border-slate-200 text-slate-700 font-medium rounded-xl flex items-center gap-2 hover:bg-slate-50 hover:border-slate-300 transition shadow-sm">
-				<svg class="w-5 h-5 text-violet-600" fill="none" viewBox="0 0 24 24"
-				     stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-					      d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-					      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+				<svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor"
+				     viewBox="0 0 24 24">
+					<path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="2"></path>
+					<path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="2"></path>
 				</svg>
 				Watch Workflow
 			</button>
@@ -258,27 +258,27 @@
 		<div class="glass-card p-8 rounded-3xl group cursor-default">
 			<div
 					class="w-12 h-12 rounded-xl bg-cyan-50 border border-cyan-100 flex items-center justify-center text-cyan mb-6 group-hover:scale-110 transition shadow-sm">
-				<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-				     stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-					      d="M13 10V3L4 14h7v7l9-11h-7z"/>
+				<svg class="w-6 h-6" fill="none" stroke="currentColor"
+				     viewBox="0 0 24 24">
+					<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="2"/>
 				</svg>
 			</div>
 			<h3 class="text-xl font-bold text-slate-800 mb-2 font-sans">Instant
 				Analysis</h3>
 			<p class="text-slate-500 leading-relaxed">Upload PDF reports or connect
 				directly to IDEXX/Antech analyzers. Get results in <span
-						class="text-cyan font-mono font-bold">0.4s</span>.</p>
+						class="text-cyan font-mono font-bold">seconds</span>.</p>
 		</div>
 
 		<!-- Card 2 -->
 		<div class="glass-card p-8 rounded-3xl group cursor-default">
 			<div
 					class="w-12 h-12 rounded-xl bg-violet-50 border border-violet-100 flex items-center justify-center text-violet mb-6 group-hover:scale-110 transition shadow-sm">
-				<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-				     stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-					      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+				<svg class="w-6 h-6" fill="none" stroke="currentColor"
+				     viewBox="0 0 24 24">
+					<path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="2"/>
 				</svg>
 			</div>
 			<h3 class="text-xl font-bold text-slate-800 mb-2 font-sans">Predictive
@@ -292,10 +292,10 @@
 		<div class="glass-card p-8 rounded-3xl group cursor-default">
 			<div
 					class="w-12 h-12 rounded-xl bg-pink-50 border border-pink-100 flex items-center justify-center text-pink-500 mb-6 group-hover:scale-110 transition shadow-sm">
-				<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-				     stroke="currentColor">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-					      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+				<svg class="w-6 h-6" fill="none" stroke="currentColor"
+				     viewBox="0 0 24 24">
+					<path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"
+					      stroke-width="2"/>
 				</svg>
 			</div>
 			<h3 class="text-xl font-bold text-slate-800 mb-2 font-sans">Auto-Treatment
