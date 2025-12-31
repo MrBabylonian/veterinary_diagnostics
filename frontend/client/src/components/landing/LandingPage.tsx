@@ -1,7 +1,6 @@
-import React from "react";
-import { Navbar } from "./Navbar";
-import { Hero } from "./Hero";
 import { Feature } from "./Feature";
+import { Hero } from "./Hero";
+import { Navbar } from "./Navbar";
 
 const LandingPage = () => {
   return (

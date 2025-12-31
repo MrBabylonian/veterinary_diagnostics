@@ -1,115 +1,117 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import {
-	CreateUserDto,
-	User,
-	UserForLoginDto,
-	UserForPublicDto,
+  CreateUserDto,
+  User,
+  UserForLoginDto,
+  UserForPublicDto,
 } from "@workspace/shared/dto/user";
 import * as argon2 from "argon2";
 import { plainToClass } from "class-transformer";
 import { UsersService } from "src/users/users.service";
+import { uuidv7 } from "uuidv7";
 
 @Injectable()
 export class AuthService {
-	constructor(
-		private jwtService: JwtService,
-		private usersService: UsersService,
-	) {}
+  constructor(
+    private jwtService: JwtService,
+    private usersService: UsersService,
+  ) { }
 
-	/**
-	 * Register a new user with provided user data
-	 * @param userData - CreateUserDto containing user registration information
-	 * @returns Promise<{ status: number; registeredUser: UserForPublicDto; }> - status code and registered user public information
-	 * @throws {Error} - if user creation fails
-	 */
-	async register(
-		userData: CreateUserDto,
-	): Promise<{ status: number; registeredUser: UserForPublicDto }> {
-		const passwordHash = await argon2.hash(userData.password);
+  /**
+   * Register a new user with provided user data
+   * @param userData - CreateUserDto containing user registration information
+   * @returns Promise<{ status: number; registeredUser: UserForPublicDto; }> - status code and registered user public information
+   * @throws {Error} - if user creation fails
+   */
+  async register(
+    userData: CreateUserDto,
+  ): Promise<{ status: number; registeredUser: UserForPublicDto; }> {
+    const passwordHash = await argon2.hash(userData.password);
+
+    const id = 
 
 		const userToCreate = plainToClass(
-			User,
-			{
-				...userData,
-				password_hash: passwordHash,
-			},
-			{ excludeExtraneousValues: true },
-		);
+      User,
+      {
+        ...userData,
+        password_hash: passwordHash,
+      },
+      { excludeExtraneousValues: true },
+    );
 
-		return this.usersService.create(userToCreate);
-	}
+    return this.usersService.create(userToCreate);
+  }
 
-	/**
-	 * Validate a user's credentials with email and password
-	 * @param email - user's email address
-	 * @param password - user's plain text password
-	 * @returns Promise<{ id: string; email: string; }> - user id and email if valid
-	 * @throws {NotFoundException} - if user is not found
-	 * @throws {UnauthorizedException} - if password is invalid
-	 */
-	async validateUser(
-		email: string,
-		password: string,
-	): Promise<{ id: string; email: string }> {
-		const userInDb = await this.usersService.findByEmailForValidation(email);
+  /**
+   * Validate a user's credentials with email and password
+   * @param email - user's email address
+   * @param password - user's plain text password
+   * @returns Promise<{ id: string; email: string; }> - user id and email if valid
+   * @throws {NotFoundException} - if user is not found
+   * @throws {UnauthorizedException} - if password is invalid
+   */
+  async validateUser(
+    email: string,
+    password: string,
+  ): Promise<{ id: string; email: string; }> {
+    const userInDb = await this.usersService.findByEmailForValidation(email);
 
-		const isValid = await argon2.verify(userInDb.password_hash, password);
+    const isValid = await argon2.verify(userInDb.password_hash, password);
 
-		if (!isValid) throw new UnauthorizedException("Invalid password");
+    if (!isValid) throw new UnauthorizedException("Invalid password");
 
-		const user = {
-			id: userInDb.id,
-			email: userInDb.email,
-		};
+    const user = {
+      id: userInDb.id,
+      email: userInDb.email,
+    };
 
-		return user;
-	}
+    return user;
+  }
 
-	/**
-	 * Authenticate user and generate JWT token
-	 * @param credentials - UserForLoginDto containing email and password
-	 * @returns Promise<string> - JWT access token
-	 * @throws {NotFoundException} - if user is not found
-	 * @throws {UnauthorizedException} - if credentials are invalid
-	 */
-	async login(credentials: UserForLoginDto): Promise<string> {
-		const user = await this.validateUser(
-			credentials.email,
-			credentials.password,
-		);
+  /**
+   * Authenticate user and generate JWT token
+   * @param credentials - UserForLoginDto containing email and password
+   * @returns Promise<string> - JWT access token
+   * @throws {NotFoundException} - if user is not found
+   * @throws {UnauthorizedException} - if credentials are invalid
+   */
+  async login(credentials: UserForLoginDto): Promise<string> {
+    const user = await this.validateUser(
+      credentials.email,
+      credentials.password,
+    );
 
-		const token = await this.generateToken(user.id, user.email);
+    const token = await this.generateToken(user.id, user.email);
 
-		return token;
-	}
+    return token;
+  }
 
-	/**
-	 * Generate a JWT token for authenticated user
-	 * @param sub - user's unique identifier (subject)
-	 * @param email - user's email address
-	 * @returns Promise<string> - signed JWT token
-	 * @throws {Error} - if JWT signing fails (invalid secret or payload)
-	 */
-	async generateToken(sub: string, email: string): Promise<string> {
-		return this.jwtService.sign({
-			sub,
-			email,
-		});
-	}
+  /**
+   * Generate a JWT token for authenticated user
+   * @param sub - user's unique identifier (subject)
+   * @param email - user's email address
+   * @returns Promise<string> - signed JWT token
+   * @throws {Error} - if JWT signing fails (invalid secret or payload)
+   */
+  async generateToken(sub: string, email: string): Promise<string> {
+    return this.jwtService.sign({
+      sub,
+      email,
+    });
+  }
 
-	/**
-	 * Validate and decode a JWT token
-	 * @param token - JWT token string to validate
-	 * @returns Promise<object | null> - decoded token payload if valid, null if invalid
-	 * @throws {Error} - if token verification fails (invalid secret or token)
-	 */
-
-	async validateToken(token: string): Promise<object | null> {
-		try {
-			return this.jwtService.verify(token);
-		} catch {
-			return null;
-		}
-	}
+  /**
+   * Validate and decode a JWT token
+   * @param token - JWT token string to validate
+   * @returns Promise<object | null> - decoded token payload if valid, null if invalid
+   * @throws {Error} - if token verification fails (invalid secret or token)
+   */
+  async validateToken(token: string): Promise<object | null> {
+    try {
+      return this.jwtService.verify(token);
+    } catch {
+      return null;
+    }
+  }
 }
