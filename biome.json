@@ -1,46 +1,49 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
-  },
-  "files": {
-    "ignoreUnknown": false
-  },
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "tab"
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true,
-      "correctness": {
-        "noUnusedImports": "error",
-        "noUnusedPrivateClassMembers": "warn",
-        "noUnusedFunctionParameters": "warn"
-      },
-      "style": {
-        "useImportType": "off",
-        "noInferrableTypes": "on"
-      }
-    }
-  },
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "double"
+    "$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
     },
-    "parser": {
-      "unsafeParameterDecoratorsEnabled": true
-    }
-  },
-  "css": {
-    "parser": {
-      "tailwindDirectives": true
+    "files": {
+        "ignoreUnknown": false
     },
     "formatter": {
-      "enabled": true
+        "enabled": true,
+        "indentStyle": "tab"
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "correctness": {
+                "noUnusedImports": {
+                    "level": "error",
+                    "fix": "safe"
+                },
+                "noUnusedPrivateClassMembers": "warn",
+                "noUnusedFunctionParameters": "warn"
+            },
+            "style": {
+                "useImportType": "off",
+                "noInferrableTypes": "warn"
+            }
+        }
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "double"
+        },
+        "parser": {
+            "unsafeParameterDecoratorsEnabled": true
+        }
+    },
+    "css": {
+        "parser": {
+            "tailwindDirectives": true
+        },
+        "formatter": {
+            "enabled": true
+        }
     }
-  }
 }
