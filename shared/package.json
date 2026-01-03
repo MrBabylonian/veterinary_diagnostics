@@ -1,33 +1,30 @@
 {
-    "name": "@workspace/shared",
-    "version": "0.0.1",
-    "description": "",
-    "author": "MrBabylonian",
-    "private": true,
-    "license": "UNLICENSED",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "scripts": {
-        "build": "tsc",
-        "format": "biome check --write",
-        "lint": "biome lint",
-        "check-types": "tsc --noEmit"
-    },
-    "exports": {
-        ".": {
-            "import": "./dist/index.js",
-            "require": "./dist/index.js",
-            "types": "./dist/index.d.ts"
-        },
-        "./dto/user": {
-            "import": "./dist/dto/user.js",
-            "require": "./dist/dto/user.js",
-            "types": "./dist/dto/user.d.ts"
-        },
-        "./database": {
-            "import": "./dist/database/index.js",
-            "require": "./dist/database/index.js",
-            "types": "./dist/database/index.d.ts"
-        }
-    }
+	"name": "@workspace/shared",
+	"version": "0.0.1",
+	"description": "",
+	"author": "MrBabylonian",
+	"private": true,
+	"license": "UNLICENSED",
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"clean": "rm -rf dist src/**/*.js src/**/*.d.ts src/**/*.js.map src/**/*.d.ts.map",
+		"format": "biome check --write",
+		"lint": "biome lint",
+		"check-types": "tsc --noEmit"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		},
+		"./*": {
+			"import": "./dist/*.js",
+			"require": "./dist/*.js",
+			"types": "./dist/*.d.ts"
+		}
+	}
 }

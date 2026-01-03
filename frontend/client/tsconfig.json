@@ -1,5 +1,5 @@
 {
-	"extends": "@workspace/configuration/tsconfig",
+	"extends": "@workspace/configuration/tsconfig/base.json",
 	"compilerOptions": {
 		"jsx": "react-jsx",
 		"baseUrl": ".",
@@ -16,8 +16,8 @@
 		"next-env.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
-		".next/types/**/*.ts",
-		".next/dev/types/**/*.ts",
+		"dist/types/**/*.ts",
+		"dist/dev/types/**/*.ts",
 		"**/*.mts"
 	],
 	"exclude": ["node_modules"]
