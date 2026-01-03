@@ -1,21 +1,20 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import {
   CreateUserDto,
-  User,
   UserForLoginDto,
   UserForPublicDto,
-} from "@workspace/shared/dto/user";
+  UserRepository,
+} from "@workspace/shared";
 import * as argon2 from "argon2";
 import { plainToClass } from "class-transformer";
-import { UsersService } from "src/users/users.service";
-import { uuidv7 } from "uuidv7";
+import { UUID7Generator } from "uuid7-typed";
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private usersService: UsersService,
+    private usersRepository: UserRepository,
   ) { }
 
   /**
@@ -29,18 +28,15 @@ export class AuthService {
   ): Promise<{ status: number; registeredUser: UserForPublicDto; }> {
     const passwordHash = await argon2.hash(userData.password);
 
-    const id = 
+    const id = UUID7Generator.create();
 
-		const userToCreate = plainToClass(
-      User,
-      {
-        ...userData,
-        password_hash: passwordHash,
-      },
-      { excludeExtraneousValues: true },
-    );
+    const userToCreate = plainToClass(CreateUserDto, {
+      ...userData,
+      id,
+      password_hash: passwordHash,
+    });
 
-    return this.usersService.create(userToCreate);
+    return this.usersRepository.create(userToCreate);
   }
 
   /**
@@ -51,23 +47,7 @@ export class AuthService {
    * @throws {NotFoundException} - if user is not found
    * @throws {UnauthorizedException} - if password is invalid
    */
-  async validateUser(
-    email: string,
-    password: string,
-  ): Promise<{ id: string; email: string; }> {
-    const userInDb = await this.usersService.findByEmailForValidation(email);
-
-    const isValid = await argon2.verify(userInDb.password_hash, password);
-
-    if (!isValid) throw new UnauthorizedException("Invalid password");
-
-    const user = {
-      id: userInDb.id,
-      email: userInDb.email,
-    };
-
-    return user;
-  }
+  async validateUser(email: string, password: string) { ; }
 
   /**
    * Authenticate user and generate JWT token
@@ -76,15 +56,8 @@ export class AuthService {
    * @throws {NotFoundException} - if user is not found
    * @throws {UnauthorizedException} - if credentials are invalid
    */
-  async login(credentials: UserForLoginDto): Promise<string> {
-    const user = await this.validateUser(
-      credentials.email,
-      credentials.password,
-    );
-
-    const token = await this.generateToken(user.id, user.email);
-
-    return token;
+  async login(credentials: UserForLoginDto) {
+    ;
   }
 
   /**
