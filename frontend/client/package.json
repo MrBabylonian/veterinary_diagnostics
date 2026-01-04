@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "next dev",
 		"format": "biome check --write",
-		"build": "next build",
+		"build": "tsc --noEmit && next build",
 		"start": "next start",
 		"lint": "next lint",
 		"check-types": "tsc --noEmit"
