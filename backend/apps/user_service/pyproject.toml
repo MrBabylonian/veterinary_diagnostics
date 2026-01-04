@@ -1,0 +1,15 @@
+[project]
+name = "user-service"
+version = "0.1.0"
+authors = [
+    { name = "MrBabylonian", email = "bedirhangilgiler@gmailcom" }
+]
+dependencies = [
+    "asyncpg",        # The best driver for Async Raw SQL
+    "python-dotenv",
+    "my-common-lib",
+]
+requires-python = "==3.12.12"
+
+[tool.uv.sources]
+my-common-lib = { path = "../../libs/common", editable = true }
