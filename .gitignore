@@ -45,4 +45,7 @@ temp/
 package-lock.json
 
 .amazonq/
-.github
+.github/
+.turbo/
+.next/
+frontend/client/next-env.d.ts
