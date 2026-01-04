@@ -1,6 +1,6 @@
 import { Controller } from "@nestjs/common";
 import { MessagePattern } from "@nestjs/microservices";
-import { CreateUserDto, UserForLoginDto } from "@workspace/shared/dto/user";
+import { CreateUserDto, UserForLoginDto } from "@workspace/shared";
 import { AuthService } from "./auth/auth.service";
 
 @Controller()
