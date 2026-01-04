@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///home/mrbabylonian/Desktop/Coding/Development/Development/TypeScript/NodeJS/veterinary_diagnostics/frontend/client/src/app/page.tsx"],"sourcesContent":["// app/page.tsx\nimport { Navbar, Hero } from \"@/components/landing/\";\n\nexport default function Home() {\n  return (\n    <div>\n      <Navbar />\n      <Hero />\n    </div>\n  );\n}\n"],"names":[],"mappings":"AAAA,eAAe;;;;;;;;;;;;;AAGA,SAAS;IACtB,qBACE,8OAAC;;0BACC,8OAAC;;;;;0BACD,8OAAC;;;;;;;;;;;AAGP"}}]
+}
