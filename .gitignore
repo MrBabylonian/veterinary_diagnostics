@@ -45,4 +45,4 @@ temp/
 package-lock.json
 
 .amazonq/
-.github/
+.github
