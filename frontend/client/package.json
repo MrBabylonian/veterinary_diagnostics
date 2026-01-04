@@ -6,8 +6,12 @@
 		"dev": "next dev",
 		"format": "biome check --write",
 		"build": "tsc --noEmit && next build",
+		"clean": "rm -rf ./dist",
 		"start": "next start",
 		"lint": "next lint",
 		"check-types": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@types/node": "^25.0.3"
 	}
 }
