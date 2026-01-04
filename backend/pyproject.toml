@@ -1,0 +1,13 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Monorepo for microservices backend (Veterinary AI Diagnosis System)"
+authors = [
+    { name = "MrBabylonian", email = "bedirhangilgiler@gmailcom" }
+]
+readme = "README.md"
+requires-python = "==3.12.12"
+dependencies = []
+
+[tool.uv.workspace]
+members = ["apps/*", "libs/*"]
