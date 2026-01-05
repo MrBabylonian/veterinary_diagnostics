@@ -2,11 +2,11 @@
 name = "user-service"
 version = "0.1.0"
 authors = [
-    { name = "MrBabylonian", email = "bedirhangilgiler@gmailcom" }
+    { name = "MrBabylonian", email = "bedirhangilgiler@gmail.com" }
 ]
 dependencies = [
-    "asyncpg",        # The best driver for Async Raw SQL
-    "python-dotenv",
+    "asyncpg >= 0.31.0",        
+    "python-dotenv >= 1.2.1",
     "my-common-lib",
 ]
 requires-python = "==3.12.12"
