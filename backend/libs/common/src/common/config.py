@@ -3,7 +3,7 @@ from pydantic.fields import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class AppStatus(Enum, str):
+class AppStatus(str, Enum):
     """
     Application environment status.
     """
