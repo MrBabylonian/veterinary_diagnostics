@@ -14,7 +14,7 @@ def setup_logging():
 
     # Environment detection
     # In K8s/Docker, sett APP_ENV=production
-    is_prod: bool = os.getenv("APP_ENV", "development").lower == "production"
+    is_prod: bool = os.getenv("APP_ENV_STATUS", "development").lower() == "production"
 
     processors = [
         # Merges context from variables (e.g., if we bound 'user_id'
@@ -24,7 +24,7 @@ def setup_logging():
         structlog.processors.TimeStamper(fmt="iso"),
         # If an error occurs, this captures the stack trace automatically.
         structlog.processors.StackInfoRenderer(),
-        structlog.dev.set_exc_info
+        structlog.dev.set_exc_info,
     ]
 
     if is_prod:
@@ -33,12 +33,12 @@ def setup_logging():
         renderer = structlog.dev.ConsoleRenderer()
 
     structlog.configure(
-        processors=processors + [renderer],
+        processors=[*processors, renderer],
         # We use a standard PrintLogger (writes to stdout)
         # In containers, stdout is captured by Docker automatically.
         logger_factory=structlog.PrintLoggerFactory(),
         # For a better performance
-        cache_logger_on_first_use=True
+        cache_logger_on_first_use=True,
     )
 
 
