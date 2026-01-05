@@ -5,6 +5,25 @@ from .logging import get_logger
 
 log = get_logger("common-db")
 
+
+class DatabaseError(Exception):
+    """Base exception for database-related errors."""
+
+    pass
+
+
+class DatabaseConfigError(DatabaseError):
+    """Raised when database configuration is invalid."""
+
+    pass
+
+
+class DatabaseNotInitializedError(DatabaseError):
+    """Raised when attempting to use an uninitialized database pool."""
+
+    pass
+
+
 class Database:
     """
     A wrapper class for managing database connections using asyncpg.
@@ -28,23 +47,19 @@ class Database:
         """
         if not self.dsn:
             log.error("db_connection_failed", reason="dsn_missing")
-            raise ValueError("Database DSN must be provided")
-        log.info("db_connecting", service=os.getenv('SERVICE_NAME', 'unknown'))
+            raise DatabaseConfigError("Database DSN must be provided")
+        log.info("db_connecting", service=os.getenv("SERVICE_NAME", "unknown"))
 
         try:
             self.pool = await asyncpg.create_pool(
-                dsn=self.dsn,
-                min_size=5,
-                max_size=2,
-                command_timeout=60
+                dsn=self.dsn, min_size=5, max_size=20, command_timeout=60
             )
-            log.info(
-                f"Database connected successfully from service {os.getenv('SERVICE_NAME', 'unknown')}")
+            log.info("db_connected", service=os.getenv("SERVICE_NAME", "unknown"))
         except Exception as e:
             log.critical("db_connection_failed", reason=str(e))
             raise e
 
-    async def disconnect(self)  :
+    async def disconnect(self):
         """
         Closes all connections.
         Should be called exactly once at the shutdown of any microservice.
@@ -62,8 +77,9 @@ class Database:
         """
         if not self.pool:
             log.error("db_usage_error", reason="pool_not_initialized")
-            raise Exception("Database pool is not initialized. Call 'await connect()' first.")
+            raise DatabaseNotInitializedError(
+                "Database pool is not initialized. Call 'await connect()' first."
+            )
 
         async with self.pool.acquire() as connection:
             yield connection
-
