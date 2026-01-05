@@ -1,3 +1,4 @@
+from pydantic.types import SecretStr
 from enum import Enum
 from pydantic.fields import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -18,10 +19,10 @@ class BaseServiceSettings(BaseSettings):
     Base configuration for all microservices.
     """
 
-    APP_NAME: str = Field(...)
+    SERVICE_NAME: str = Field(...)
     APP_ENV_STATUS: AppStatus = Field(default=AppStatus.DEVELOPMENT)
     GRPC_PORT: int = Field(...)
-    DATABASE_URL: str = Field(...)
+    DATABASE_URL: SecretStr = Field(...)
 
     model_config = SettingsConfigDict(
         env_file=".env", extra="ignore", case_sensitive=True
