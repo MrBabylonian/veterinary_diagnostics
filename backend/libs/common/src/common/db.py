@@ -57,7 +57,7 @@ class Database:
             log.info("db_connected", service=os.getenv("SERVICE_NAME", "unknown"))
         except Exception as e:
             log.critical("db_connection_failed", reason=str(e))
-            raise e
+            raise
 
     async def disconnect(self):
         """
