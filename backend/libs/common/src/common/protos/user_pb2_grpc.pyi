@@ -7,7 +7,7 @@ import abc
 import collections.abc
 import grpc
 import grpc.aio
-from common.protos import user_pb2
+from . import user_pb2
 import typing
 
 _T = typing.TypeVar("_T")
