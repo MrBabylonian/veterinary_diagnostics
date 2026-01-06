@@ -49,6 +49,12 @@ dependencies = [
     { name = "grpcio-tools" },
     { name = "pydantic-settings" },
     { name = "structlog" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "grpc-stubs" },
+    { name = "mypy-protobuf" },
     { name = "types-protobuf" },
 ]
 
@@ -59,7 +65,25 @@ requires-dist = [
     { name = "grpcio-tools", specifier = ">=1.76.0" },
     { name = "pydantic-settings", specifier = ">=2.12.0" },
     { name = "structlog", specifier = ">=25.5.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "grpc-stubs", specifier = ">=1.53.0.6" },
+    { name = "mypy-protobuf", specifier = ">=4.0.0" },
     { name = "types-protobuf", specifier = ">=6.32.1.20251210" },
+]
+
+[[package]]
+name = "grpc-stubs"
+version = "1.53.0.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "grpcio" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/16/8d/718393d12346c6ab842a1ad2b1a761c175e919ddce4a28c5dc63e4a5538c/grpc_stubs-1.53.0.6.tar.gz", hash = "sha256:70a0840747bd73c2c82fe819699bbf4fcf6d59bd0ed27a4713a240e0c697e1ff", size = 12954, upload-time = "2025-04-28T11:12:55.407Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/38/c6/c64257331aa4b7a049bd70124d97278071e78b5d5de09df6a5eae4610bbe/grpc_stubs-1.53.0.6-py3-none-any.whl", hash = "sha256:3ffc5a6b5bd84ac46f3d84e2434e97936c1262b47b71b462bdedc43caaf227e1", size = 15842, upload-time = "2025-04-28T11:12:53.982Z" },
 ]
 
 [[package]]
@@ -104,6 +128,19 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/84/47/dcf8380df4bd7931ffba32fc6adc2de635b6569ca27fdec7121733797062/grpcio_tools-1.76.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:479ce02dff684046f909a487d452a83a96b4231f7c70a3b218a075d54e951f56", size = 3325144, upload-time = "2025-10-21T16:25:30.863Z" },
     { url = "https://files.pythonhosted.org/packages/04/88/ea3e5fdb874d8c2d04488e4b9d05056537fba70915593f0c283ac77df188/grpcio_tools-1.76.0-cp312-cp312-win32.whl", hash = "sha256:9ba4bb539936642a44418b38ee6c3e8823c037699e2cb282bd8a44d76a4be833", size = 993523, upload-time = "2025-10-21T16:25:32.594Z" },
     { url = "https://files.pythonhosted.org/packages/de/b1/ce7d59d147675ec191a55816be46bc47a343b5ff07279eef5817c09cc53e/grpcio_tools-1.76.0-cp312-cp312-win_amd64.whl", hash = "sha256:0cd489016766b05f9ed8a6b6596004b62c57d323f49593eac84add032a6d43f7", size = 1158493, upload-time = "2025-10-21T16:25:34.5Z" },
+]
+
+[[package]]
+name = "mypy-protobuf"
+version = "4.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "protobuf" },
+    { name = "types-protobuf" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f9/95/afd552608fc8b112dd39c99d22ddb1b2da147dfd58c8c74c919e14ae99cd/mypy_protobuf-4.0.0.tar.gz", hash = "sha256:e200c833645dcfdfe8aa47f4a33d3a4b01b6be5b9a58ddbfc441329d5b679274", size = 29538, upload-time = "2025-12-21T05:35:20.57Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cd/78/44d4cfdc39d61a606b8747ca9542fc4f91477098c911295e45af17b1d72a/mypy_protobuf-4.0.0-py3-none-any.whl", hash = "sha256:b859286891c51e420aef711b3e6616444e81c64723c12110d1dda809fad105f6", size = 18609, upload-time = "2025-12-21T05:35:18.956Z" },
 ]
 
 [[package]]
