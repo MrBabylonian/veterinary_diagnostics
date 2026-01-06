@@ -1,3 +1,4 @@
+from common.config import AppStatus
 from user_service.app.core.config import settings
 import grpc
 from common.protos import user_pb2_grpc
@@ -19,7 +20,13 @@ async def run_grpc_server(db: Database):
 
     address = f"[::]:{settings.GRPC_PORT}"
 
-    server.add_insecure_port(address)
+    if settings.APP_ENV_STATUS == AppStatus.DEVELOPMENT:
+        server.add_insecure_port(address)
+        log.warning("grpc_server_insecure_mode", service=settings.SERVICE_NAME)
+    elif settings.APP_ENV_STATUS == AppStatus.PRODUCTION:
+        # TO DO: Add TLS credentials here for production
+
+
 
     log.info("grpc_server_starting", service=settings.SERVICE_NAME, address=address)
 

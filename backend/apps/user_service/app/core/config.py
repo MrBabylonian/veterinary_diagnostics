@@ -2,7 +2,7 @@ from common.config import BaseServiceSettings
 
 
 class Settings(BaseServiceSettings):
-    SERVICE_NAME = "User Service"
+    SERVICE_NAME: str = "User Service"
 
 
 settings = Settings()
