@@ -12,11 +12,11 @@ class UserService(UserServiceServicer):
     def __init__(self, db: Database):
         self.db: Database = db
 
-    async def GetUserById(  # type: ignore[override]
+    async def GetUserById(
         self,
-        request: user_pb2.GetUserByIdRequest,  # type: ignore[override]
-        context: grpc.aio.ServicerContext,  # type: ignore[override]
-    ) -> user_pb2.UserResponse:  # type: ignore[override]
+        request: user_pb2.GetUserByIdRequest,
+        context: grpc.aio.ServicerContext,
+    ) -> user_pb2.UserResponse:
         req_log = log.bind(user_id=request.id, method="GetUserById")
 
         query = "SELECT id, email, first_name, middle_name, last_name, status FROM users WHERE id = $1"
@@ -43,6 +43,3 @@ class UserService(UserServiceServicer):
         except Exception as e:
             req_log.error("db_error", error=str(e))
             await context.abort(grpc.StatusCode.INTERNAL, "Database Error")
-
-        # Fallback (should never reach here, but satisfies type checker)
-        raise RuntimeError("Unexpected code path")
