@@ -7,7 +7,7 @@ import abc
 import collections.abc
 import grpc
 import grpc.aio
-import protos.user_pb2
+from common.protos import user_pb2
 import typing
 
 _T = typing.TypeVar("_T")
@@ -27,18 +27,18 @@ class UserServiceStub:
     def __new__(cls, channel: grpc.Channel) -> UserServiceStub: ...
     @typing.overload
     def __new__(cls, channel: grpc.aio.Channel) -> UserServiceAsyncStub: ...
-    GetUserById: grpc.UnaryUnaryMultiCallable[protos.user_pb2.GetUserByIdRequest, protos.user_pb2.UserResponse]
-    GetUserByEmail: grpc.UnaryUnaryMultiCallable[protos.user_pb2.GetUserByEmailRequest, protos.user_pb2.UserResponse]
-    CreateUser: grpc.UnaryUnaryMultiCallable[protos.user_pb2.CreateUserRequest, protos.user_pb2.UserResponse]
+    GetUserById: grpc.UnaryUnaryMultiCallable[user_pb2.GetUserByIdRequest, user_pb2.UserResponse]
+    GetUserByEmail: grpc.UnaryUnaryMultiCallable[user_pb2.GetUserByEmailRequest, user_pb2.UserResponse]
+    CreateUser: grpc.UnaryUnaryMultiCallable[user_pb2.CreateUserRequest, user_pb2.UserResponse]
 
 @typing.type_check_only
 class UserServiceAsyncStub(UserServiceStub):
     """SERVICE & DTO's"""
 
     def __init__(self, channel: grpc.aio.Channel) -> None: ...
-    GetUserById: grpc.aio.UnaryUnaryMultiCallable[protos.user_pb2.GetUserByIdRequest, protos.user_pb2.UserResponse]  # type: ignore[assignment]
-    GetUserByEmail: grpc.aio.UnaryUnaryMultiCallable[protos.user_pb2.GetUserByEmailRequest, protos.user_pb2.UserResponse]  # type: ignore[assignment]
-    CreateUser: grpc.aio.UnaryUnaryMultiCallable[protos.user_pb2.CreateUserRequest, protos.user_pb2.UserResponse]  # type: ignore[assignment]
+    GetUserById: grpc.aio.UnaryUnaryMultiCallable[user_pb2.GetUserByIdRequest, user_pb2.UserResponse]  # type: ignore[assignment]
+    GetUserByEmail: grpc.aio.UnaryUnaryMultiCallable[user_pb2.GetUserByEmailRequest, user_pb2.UserResponse]  # type: ignore[assignment]
+    CreateUser: grpc.aio.UnaryUnaryMultiCallable[user_pb2.CreateUserRequest, user_pb2.UserResponse]  # type: ignore[assignment]
 
 class UserServiceServicer(metaclass=abc.ABCMeta):
     """SERVICE & DTO's"""
@@ -46,22 +46,22 @@ class UserServiceServicer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def GetUserById(
         self,
-        request: protos.user_pb2.GetUserByIdRequest,
+        request: user_pb2.GetUserByIdRequest,
         context: _ServicerContext,
-    ) -> typing.Union[protos.user_pb2.UserResponse, collections.abc.Awaitable[protos.user_pb2.UserResponse]]: ...
+    ) -> typing.Union[user_pb2.UserResponse, collections.abc.Awaitable[user_pb2.UserResponse]]: ...
 
     @abc.abstractmethod
     def GetUserByEmail(
         self,
-        request: protos.user_pb2.GetUserByEmailRequest,
+        request: user_pb2.GetUserByEmailRequest,
         context: _ServicerContext,
-    ) -> typing.Union[protos.user_pb2.UserResponse, collections.abc.Awaitable[protos.user_pb2.UserResponse]]: ...
+    ) -> typing.Union[user_pb2.UserResponse, collections.abc.Awaitable[user_pb2.UserResponse]]: ...
 
     @abc.abstractmethod
     def CreateUser(
         self,
-        request: protos.user_pb2.CreateUserRequest,
+        request: user_pb2.CreateUserRequest,
         context: _ServicerContext,
-    ) -> typing.Union[protos.user_pb2.UserResponse, collections.abc.Awaitable[protos.user_pb2.UserResponse]]: ...
+    ) -> typing.Union[user_pb2.UserResponse, collections.abc.Awaitable[user_pb2.UserResponse]]: ...
 
 def add_UserServiceServicer_to_server(servicer: UserServiceServicer, server: typing.Union[grpc.Server, grpc.aio.Server]) -> None: ...
