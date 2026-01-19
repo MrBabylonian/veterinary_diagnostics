@@ -38,6 +38,16 @@ wheels = [
 name = "backend"
 version = "0.1.0"
 source = { virtual = "." }
+dependencies = [
+    { name = "common" },
+    { name = "user-service" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "common", editable = "libs/common" },
+    { name = "user-service", editable = "apps/user_service" },
+]
 
 [[package]]
 name = "common"
@@ -276,7 +286,7 @@ wheels = [
 [[package]]
 name = "user-service"
 version = "0.1.0"
-source = { virtual = "apps/user_service" }
+source = { editable = "apps/user_service" }
 dependencies = [
     { name = "asyncpg" },
     { name = "common" },
