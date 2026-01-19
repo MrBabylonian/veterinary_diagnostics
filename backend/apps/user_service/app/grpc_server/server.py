@@ -25,6 +25,7 @@ async def run_grpc_server(db: Database):
         log.warning("grpc_server_insecure_mode", service=settings.SERVICE_NAME)
     elif settings.APP_ENV_STATUS == AppStatus.PRODUCTION:
         # TO DO: Add TLS credentials here for production
+        pass
 
 
 
