@@ -1,3 +1,5 @@
+import hashlib
+
 import asyncpg
 import grpc
 from common.db import Database
@@ -6,6 +8,11 @@ from common.protos import user_pb2
 from common.protos.user_pb2_grpc import UserServiceServicer
 
 log = get_logger("user_service_grpc")
+
+
+def _hash_email(email: str) -> str:
+    """Return a truncated SHA-256 hash of the email for privacy-safe logging."""
+    return hashlib.sha256(email.lower().encode()).hexdigest()[:12]
 
 
 class UserService(UserServiceServicer):
@@ -54,7 +61,9 @@ class UserService(UserServiceServicer):
         request: user_pb2.GetUserByEmailRequest,
         context: grpc.aio.ServicerContext,
     ):
-        req_log = log.bind(user_email=request.email, method="GetUserByEmail")
+        req_log = log.bind(
+            email_hash=_hash_email(request.email), method="GetUserByEmail"
+        )
 
         query = "SELECT id, email, first_name, middle_name, last_name, status FROM users WHERE email = $1"
 
@@ -87,7 +96,7 @@ class UserService(UserServiceServicer):
     async def CreateUser(
         self, request: user_pb2.CreateUserRequest, context: grpc.aio.ServicerContext
     ):
-        req_log = log.bind(user_email=request.email, method="CreateUser")
+        req_log = log.bind(email_hash=_hash_email(request.email), method="CreateUser")
         query = """ 
             INSERT INTO users (id, email, first_name, middle_name, last_name, password_hash)
             VALUES ($1, $2, $3, $4, $5, $6)
@@ -104,9 +113,15 @@ class UserService(UserServiceServicer):
                     request.last_name,
                     request.password_hash,  # TODO: Hash the password before storing
                 )
-                if success:
+                if success is not None and success:
                     req_log.info("user_created")
                     return user_pb2.CreateUserResponse(success=True)
+                else:
+                    req_log.error("user_creation_failed_unexpectedly")
+                    await context.abort(
+                        code=grpc.StatusCode.INTERNAL,
+                        details="User creation failed unexpectedly.",
+                    )
         except asyncpg.UniqueViolationError as error:
             req_log.warning(
                 "user_already_exists",
