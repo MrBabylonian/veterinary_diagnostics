@@ -60,7 +60,11 @@ enum AuthProvider {
 service UserService {
   rpc GetUserById(GetUserByIdRequest) returns (UserResponse);
   rpc GetUserByEmail(GetUserByEmailRequest) returns (UserResponse);
-  rpc CreateUser(CreateUserRequest) returns (UserResponse);
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+}
+
+message CreateUserResponse {
+  bool success = 1;
 }
 
 message GetUserByIdRequest {

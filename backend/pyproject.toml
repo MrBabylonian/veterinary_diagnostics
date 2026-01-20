@@ -2,13 +2,14 @@
 name = "backend"
 version = "0.1.0"
 description = "Monorepo for microservices backend (Veterinary AI Diagnosis System)"
-authors = [
-    { name = "MrBabylonian", email = "bedirhangilgiler@gmail.com" }
-]
+authors = [{ name = "MrBabylonian", email = "bedirhangilgiler@gmail.com" }]
 readme = "README.md"
 requires-python = "==3.12.12"
-dependencies = [
-]
+dependencies = ["user-service", "common"]
+
+[tool.uv.sources]
+user-service = { workspace = true }
+common = { workspace = true }
 
 [tool.uv.workspace]
 members = ["apps/*", "libs/*"]

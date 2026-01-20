@@ -178,6 +178,22 @@ class User(google.protobuf.message.Message):
 Global___User: typing_extensions.TypeAlias = User
 
 @typing.final
+class CreateUserResponse(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    SUCCESS_FIELD_NUMBER: builtins.int
+    success: builtins.bool
+    def __init__(
+        self,
+        *,
+        success: builtins.bool = ...,
+    ) -> None: ...
+    _ClearFieldArgType: typing_extensions.TypeAlias = typing.Literal["success", b"success"]
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+
+Global___CreateUserResponse: typing_extensions.TypeAlias = CreateUserResponse
+
+@typing.final
 class GetUserByIdRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
