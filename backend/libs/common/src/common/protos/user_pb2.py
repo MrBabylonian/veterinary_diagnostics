@@ -25,27 +25,29 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11protos/user.proto\x12\x04user\x1a\x1fgoogle/protobuf/timestamp.proto\"\xda\x05\n\x04User\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x12\n\nfirst_name\x18\x03 \x01(\t\x12\x18\n\x0bmiddle_name\x18\x04 \x01(\tH\x00\x88\x01\x01\x12\x11\n\tlast_name\x18\x05 \x01(\t\x12\x15\n\rpassword_hash\x18\x06 \x01(\t\x12)\n\rauth_provider\x18\x07 \x01(\x0e\x32\x12.user.AuthProvider\x12\x19\n\x0c\x61uth_subject\x18\x08 \x01(\tH\x01\x88\x01\x01\x12 \n\x06status\x18\t \x01(\x0e\x32\x10.user.UserStatus\x12\x13\n\x0bmfa_enabled\x18\n \x01(\x08\x12\x15\n\x08timezone\x18\x0b \x01(\tH\x02\x88\x01\x01\x12\x13\n\x06locale\x18\x0c \x01(\tH\x03\x88\x01\x01\x12\x17\n\navatar_url\x18\r \x01(\tH\x04\x88\x01\x01\x12\x15\n\rsettings_json\x18\x0e \x01(\t\x12:\n\x11\x65mail_verified_at\x18\x0f \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x05\x88\x01\x01\x12\x36\n\rlast_login_at\x18\x10 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x06\x88\x01\x01\x12.\n\ncreated_at\x18\x11 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nupdated_at\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\ndeleted_at\x18\x13 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x07\x88\x01\x01\x42\x0e\n\x0c_middle_nameB\x0f\n\r_auth_subjectB\x0b\n\t_timezoneB\t\n\x07_localeB\r\n\x0b_avatar_urlB\x14\n\x12_email_verified_atB\x10\n\x0e_last_login_atB\r\n\x0b_deleted_at\" \n\x12GetUserByIdRequest\x12\n\n\x02id\x18\x01 \x01(\t\"&\n\x15GetUserByEmailRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\"(\n\x0cUserResponse\x12\x18\n\x04user\x18\x01 \x01(\x0b\x32\n.user.User\"\xc8\x02\n\x11\x43reateUserRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x12\n\nfirst_name\x18\x02 \x01(\t\x12\x18\n\x0bmiddle_name\x18\x03 \x01(\tH\x00\x88\x01\x01\x12\x11\n\tlast_name\x18\x04 \x01(\t\x12\x10\n\x08password\x18\x05 \x01(\t\x12)\n\rauth_provider\x18\x06 \x01(\x0e\x32\x12.user.AuthProvider\x12\x19\n\x0c\x61uth_subject\x18\x07 \x01(\tH\x01\x88\x01\x01\x12\x15\n\x08timezone\x18\x08 \x01(\tH\x02\x88\x01\x01\x12\x13\n\x06locale\x18\t \x01(\tH\x03\x88\x01\x01\x12\x17\n\navatar_url\x18\n \x01(\tH\x04\x88\x01\x01\x42\x0e\n\x0c_middle_nameB\x0f\n\r_auth_subjectB\x0b\n\t_timezoneB\t\n\x07_localeB\r\n\x0b_avatar_url*Z\n\nUserStatus\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0c\n\x08INACTIVE\x10\x02\x12\r\n\tSUSPENDED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04*?\n\x0c\x41uthProvider\x12\t\n\x05LOCAL\x10\x00\x12\n\n\x06GOOGLE\x10\x01\x12\r\n\tMICROSOFT\x10\x02\x12\t\n\x05\x41PPLE\x10\x03\x32\xc8\x01\n\x0bUserService\x12;\n\x0bGetUserById\x12\x18.user.GetUserByIdRequest\x1a\x12.user.UserResponse\x12\x41\n\x0eGetUserByEmail\x12\x1b.user.GetUserByEmailRequest\x1a\x12.user.UserResponse\x12\x39\n\nCreateUser\x12\x17.user.CreateUserRequest\x1a\x12.user.UserResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11protos/user.proto\x12\x04user\x1a\x1fgoogle/protobuf/timestamp.proto\"\xda\x05\n\x04User\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x12\n\nfirst_name\x18\x03 \x01(\t\x12\x18\n\x0bmiddle_name\x18\x04 \x01(\tH\x00\x88\x01\x01\x12\x11\n\tlast_name\x18\x05 \x01(\t\x12\x15\n\rpassword_hash\x18\x06 \x01(\t\x12)\n\rauth_provider\x18\x07 \x01(\x0e\x32\x12.user.AuthProvider\x12\x19\n\x0c\x61uth_subject\x18\x08 \x01(\tH\x01\x88\x01\x01\x12 \n\x06status\x18\t \x01(\x0e\x32\x10.user.UserStatus\x12\x13\n\x0bmfa_enabled\x18\n \x01(\x08\x12\x15\n\x08timezone\x18\x0b \x01(\tH\x02\x88\x01\x01\x12\x13\n\x06locale\x18\x0c \x01(\tH\x03\x88\x01\x01\x12\x17\n\navatar_url\x18\r \x01(\tH\x04\x88\x01\x01\x12\x15\n\rsettings_json\x18\x0e \x01(\t\x12:\n\x11\x65mail_verified_at\x18\x0f \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x05\x88\x01\x01\x12\x36\n\rlast_login_at\x18\x10 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x06\x88\x01\x01\x12.\n\ncreated_at\x18\x11 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nupdated_at\x18\x12 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x33\n\ndeleted_at\x18\x13 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x07\x88\x01\x01\x42\x0e\n\x0c_middle_nameB\x0f\n\r_auth_subjectB\x0b\n\t_timezoneB\t\n\x07_localeB\r\n\x0b_avatar_urlB\x14\n\x12_email_verified_atB\x10\n\x0e_last_login_atB\r\n\x0b_deleted_at\"%\n\x12\x43reateUserResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\" \n\x12GetUserByIdRequest\x12\n\n\x02id\x18\x01 \x01(\t\"&\n\x15GetUserByEmailRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\"(\n\x0cUserResponse\x12\x18\n\x04user\x18\x01 \x01(\x0b\x32\n.user.User\"\xc8\x02\n\x11\x43reateUserRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x12\n\nfirst_name\x18\x02 \x01(\t\x12\x18\n\x0bmiddle_name\x18\x03 \x01(\tH\x00\x88\x01\x01\x12\x11\n\tlast_name\x18\x04 \x01(\t\x12\x10\n\x08password\x18\x05 \x01(\t\x12)\n\rauth_provider\x18\x06 \x01(\x0e\x32\x12.user.AuthProvider\x12\x19\n\x0c\x61uth_subject\x18\x07 \x01(\tH\x01\x88\x01\x01\x12\x15\n\x08timezone\x18\x08 \x01(\tH\x02\x88\x01\x01\x12\x13\n\x06locale\x18\t \x01(\tH\x03\x88\x01\x01\x12\x17\n\navatar_url\x18\n \x01(\tH\x04\x88\x01\x01\x42\x0e\n\x0c_middle_nameB\x0f\n\r_auth_subjectB\x0b\n\t_timezoneB\t\n\x07_localeB\r\n\x0b_avatar_url*Z\n\nUserStatus\x12\x16\n\x12STATUS_UNSPECIFIED\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0c\n\x08INACTIVE\x10\x02\x12\r\n\tSUSPENDED\x10\x03\x12\x0b\n\x07\x44\x45LETED\x10\x04*?\n\x0c\x41uthProvider\x12\t\n\x05LOCAL\x10\x00\x12\n\n\x06GOOGLE\x10\x01\x12\r\n\tMICROSOFT\x10\x02\x12\t\n\x05\x41PPLE\x10\x03\x32\xce\x01\n\x0bUserService\x12;\n\x0bGetUserById\x12\x18.user.GetUserByIdRequest\x1a\x12.user.UserResponse\x12\x41\n\x0eGetUserByEmail\x12\x1b.user.GetUserByEmailRequest\x1a\x12.user.UserResponse\x12?\n\nCreateUser\x12\x17.user.CreateUserRequest\x1a\x18.user.CreateUserResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'protos.user_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_USERSTATUS']._serialized_start=1240
-  _globals['_USERSTATUS']._serialized_end=1330
-  _globals['_AUTHPROVIDER']._serialized_start=1332
-  _globals['_AUTHPROVIDER']._serialized_end=1395
+  _globals['_USERSTATUS']._serialized_start=1279
+  _globals['_USERSTATUS']._serialized_end=1369
+  _globals['_AUTHPROVIDER']._serialized_start=1371
+  _globals['_AUTHPROVIDER']._serialized_end=1434
   _globals['_USER']._serialized_start=61
   _globals['_USER']._serialized_end=791
-  _globals['_GETUSERBYIDREQUEST']._serialized_start=793
-  _globals['_GETUSERBYIDREQUEST']._serialized_end=825
-  _globals['_GETUSERBYEMAILREQUEST']._serialized_start=827
-  _globals['_GETUSERBYEMAILREQUEST']._serialized_end=865
-  _globals['_USERRESPONSE']._serialized_start=867
-  _globals['_USERRESPONSE']._serialized_end=907
-  _globals['_CREATEUSERREQUEST']._serialized_start=910
-  _globals['_CREATEUSERREQUEST']._serialized_end=1238
-  _globals['_USERSERVICE']._serialized_start=1398
-  _globals['_USERSERVICE']._serialized_end=1598
+  _globals['_CREATEUSERRESPONSE']._serialized_start=793
+  _globals['_CREATEUSERRESPONSE']._serialized_end=830
+  _globals['_GETUSERBYIDREQUEST']._serialized_start=832
+  _globals['_GETUSERBYIDREQUEST']._serialized_end=864
+  _globals['_GETUSERBYEMAILREQUEST']._serialized_start=866
+  _globals['_GETUSERBYEMAILREQUEST']._serialized_end=904
+  _globals['_USERRESPONSE']._serialized_start=906
+  _globals['_USERRESPONSE']._serialized_end=946
+  _globals['_CREATEUSERREQUEST']._serialized_start=949
+  _globals['_CREATEUSERREQUEST']._serialized_end=1277
+  _globals['_USERSERVICE']._serialized_start=1437
+  _globals['_USERSERVICE']._serialized_end=1643
 # @@protoc_insertion_point(module_scope)

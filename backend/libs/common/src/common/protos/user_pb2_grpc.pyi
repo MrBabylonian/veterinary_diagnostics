@@ -5,15 +5,20 @@ isort:skip_file
 
 import abc
 import collections.abc
+import typing
+
 import grpc
 import grpc.aio
+
 from . import user_pb2
-import typing
 
 _T = typing.TypeVar("_T")
 
-class _MaybeAsyncIterator(collections.abc.AsyncIterator[_T], collections.abc.Iterator[_T], metaclass=abc.ABCMeta): ...
-
+class _MaybeAsyncIterator(
+    collections.abc.AsyncIterator[_T],
+    collections.abc.Iterator[_T],
+    metaclass=abc.ABCMeta,
+): ...
 class _ServicerContext(grpc.ServicerContext, grpc.aio.ServicerContext):  # type: ignore[misc, type-arg]
     ...
 
@@ -27,18 +32,30 @@ class UserServiceStub:
     def __new__(cls, channel: grpc.Channel) -> UserServiceStub: ...
     @typing.overload
     def __new__(cls, channel: grpc.aio.Channel) -> UserServiceAsyncStub: ...
-    GetUserById: grpc.UnaryUnaryMultiCallable[user_pb2.GetUserByIdRequest, user_pb2.UserResponse]
-    GetUserByEmail: grpc.UnaryUnaryMultiCallable[user_pb2.GetUserByEmailRequest, user_pb2.UserResponse]
-    CreateUser: grpc.UnaryUnaryMultiCallable[user_pb2.CreateUserRequest, user_pb2.UserResponse]
+    GetUserById: grpc.UnaryUnaryMultiCallable[
+        user_pb2.GetUserByIdRequest, user_pb2.UserResponse
+    ]
+    GetUserByEmail: grpc.UnaryUnaryMultiCallable[
+        user_pb2.GetUserByEmailRequest, user_pb2.UserResponse
+    ]
+    CreateUser: grpc.UnaryUnaryMultiCallable[
+        user_pb2.CreateUserRequest, user_pb2.CreateUserResponse
+    ]
 
 @typing.type_check_only
 class UserServiceAsyncStub(UserServiceStub):
     """SERVICE & DTO's"""
 
     def __init__(self, channel: grpc.aio.Channel) -> None: ...
-    GetUserById: grpc.aio.UnaryUnaryMultiCallable[user_pb2.GetUserByIdRequest, user_pb2.UserResponse]  # type: ignore[assignment]
-    GetUserByEmail: grpc.aio.UnaryUnaryMultiCallable[user_pb2.GetUserByEmailRequest, user_pb2.UserResponse]  # type: ignore[assignment]
-    CreateUser: grpc.aio.UnaryUnaryMultiCallable[user_pb2.CreateUserRequest, user_pb2.UserResponse]  # type: ignore[assignment]
+    GetUserById: grpc.aio.UnaryUnaryMultiCallable[
+        user_pb2.GetUserByIdRequest, user_pb2.UserResponse
+    ]  # type: ignore[assignment]
+    GetUserByEmail: grpc.aio.UnaryUnaryMultiCallable[
+        user_pb2.GetUserByEmailRequest, user_pb2.UserResponse
+    ]  # type: ignore[assignment]
+    CreateUser: grpc.aio.UnaryUnaryMultiCallable[
+        user_pb2.CreateUserRequest, user_pb2.CreateUserResponse
+    ]  # type: ignore[assignment]
 
 class UserServiceServicer(metaclass=abc.ABCMeta):
     """SERVICE & DTO's"""
@@ -48,20 +65,27 @@ class UserServiceServicer(metaclass=abc.ABCMeta):
         self,
         request: user_pb2.GetUserByIdRequest,
         context: _ServicerContext,
-    ) -> typing.Union[user_pb2.UserResponse, collections.abc.Awaitable[user_pb2.UserResponse]]: ...
-
+    ) -> typing.Union[
+        user_pb2.UserResponse, collections.abc.Awaitable[user_pb2.UserResponse]
+    ]: ...
     @abc.abstractmethod
     def GetUserByEmail(
         self,
         request: user_pb2.GetUserByEmailRequest,
         context: _ServicerContext,
-    ) -> typing.Union[user_pb2.UserResponse, collections.abc.Awaitable[user_pb2.UserResponse]]: ...
-
+    ) -> typing.Union[
+        user_pb2.UserResponse, collections.abc.Awaitable[user_pb2.UserResponse]
+    ]: ...
     @abc.abstractmethod
     def CreateUser(
         self,
         request: user_pb2.CreateUserRequest,
         context: _ServicerContext,
-    ) -> typing.Union[user_pb2.UserResponse, collections.abc.Awaitable[user_pb2.UserResponse]]: ...
+    ) -> typing.Union[
+        user_pb2.CreateUserResponse,
+        collections.abc.Awaitable[user_pb2.CreateUserResponse],
+    ]: ...
 
-def add_UserServiceServicer_to_server(servicer: UserServiceServicer, server: typing.Union[grpc.Server, grpc.aio.Server]) -> None: ...
+def add_UserServiceServicer_to_server(
+    servicer: UserServiceServicer, server: typing.Union[grpc.Server, grpc.aio.Server]
+) -> None: ...
