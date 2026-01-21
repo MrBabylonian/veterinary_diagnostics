@@ -5,11 +5,10 @@ description = "Monorepo for microservices backend (Veterinary AI Diagnosis Syste
 authors = [{ name = "MrBabylonian", email = "bedirhangilgiler@gmail.com" }]
 readme = "README.md"
 requires-python = "==3.12.12"
-dependencies = ["user-service", "common"]
+dependencies = ["user-service-python", "common-python"]
 
 [tool.uv.sources]
-user-service = { workspace = true }
-common = { workspace = true }
-
+user-service-python = { workspace = true }
+common-python = { workspace = true }
 [tool.uv.workspace]
-members = ["apps/*", "libs/*"]
+members = ["apps/*", "libs/common/src/python"]
