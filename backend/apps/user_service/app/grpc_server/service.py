@@ -45,7 +45,7 @@ class ProfileService(profile_pb2_grpc.ProfileServiceServicer):
                     if row["settings_json"]:
                         settings_json_struct.update(row["settings_json"])
 
-                    # Timestampt handling
+                    # Timestamp handling
                     ts = Timestamp()
                     if row["updated_at"]:
                         ts.FromDatetime(row["updated_at"])
