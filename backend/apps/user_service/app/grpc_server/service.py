@@ -35,7 +35,8 @@ class ProfileService(profile_pb2_grpc.ProfileServiceServicer):
         """
 
         try:
-            async with self.db.connect() as db_connection:
+            await self.db.connect()
+            async with self.db.get_connection() as db_connection:
                 row = await db_connection.fetchrow(query, request.user_id)
                 if row:
                     # Postgres gives us a Dict: {'theme': 'dark'}
