@@ -1,5 +1,5 @@
 [project]
-name = "user-service"
+name = "user-service-python"
 version = "0.1.0"
 authors = [
     { name = "MrBabylonian", email = "bedirhangilgiler@gmail.com" }
@@ -7,9 +7,9 @@ authors = [
 dependencies = [
     "asyncpg >= 0.31.0",        
     "python-dotenv >= 1.2.1",
-    "common",
+    "common-python",
 ]
 requires-python = "==3.12.12"
 
 [tool.uv.sources]
-common = { workspace = true }
+common-python = { workspace = true }
