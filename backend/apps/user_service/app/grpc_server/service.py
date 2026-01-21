@@ -56,6 +56,7 @@ class ProfileService(profile_pb2_grpc.ProfileServiceServicer):
                             user_id=str(row["user_id"]),
                             first_name=row["first_name"],
                             middle_name=row.get("middle_name", None),
+                            last_name=row["last_name"],
                             avatar_url=row.get("avatar_url", None),
                             timezone=row.get("timezone", None),
                             locale=row.get("locale", None),
