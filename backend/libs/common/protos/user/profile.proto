@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package user;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+// ---------------------------------------------------------
+// 1. DATA MODELS (Matches 'profiles' table)
+// ---------------------------------------------------------
+message Profile {
+  string user_id = 1; // FK to Auth ID
+  
+  string first_name = 2;
+  optional string middle_name = 4;
+  string last_name = 3;
+  
+  optional string avatar_url = 5;
+  optional string timezone = 6;
+  optional string locale = 7;
+  
+  google.protobuf.Struct settings = 8; // JSONB
+  
+  google.protobuf.Timestamp updated_at = 9;
+}
+
+// ---------------------------------------------------------
+// 2. SERVICE DEFINITION (Python Side)
+// ---------------------------------------------------------
+service ProfileService {
+  // Frontend calls this to get user details
+  rpc GetProfile(GetProfileRequest) returns (ProfileResponse);
+  
+  // Called internally or via Gateway to create the profile part
+  rpc CreateProfile(CreateProfileRequest) returns (ProfileResponse);
+}
+
+// ---------------------------------------------------------
+// 3. DTOs
+// ---------------------------------------------------------
+
+message GetProfileRequest {
+  string user_id = 1;
+}
+
+message CreateProfileRequest {
+  string user_id = 1; // Passed from Auth Service result
+  string first_name = 2;
+  string last_name = 3;
+  optional string middle_name = 4;
+  optional string locale = 5;
+}
+
+message ProfileResponse {
+  Profile profile = 1;
+}
