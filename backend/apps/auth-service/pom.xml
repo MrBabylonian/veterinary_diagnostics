@@ -52,9 +52,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>de.mkammerer</groupId>
-            <artifactId>argon2-jvm</artifactId>
-            <version>2.11</version>
+            <groupId>io.github.project-openubl</groupId>
+            <artifactId>quarkus-bouncycastle</artifactId>
+            <version>1.2.2.Final</version>
         </dependency>
     </dependencies>
 
