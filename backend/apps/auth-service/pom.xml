@@ -52,9 +52,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.github.project-openubl</groupId>
-            <artifactId>quarkus-bouncycastle</artifactId>
-            <version>1.2.2.Final</version>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
         </dependency>
     </dependencies>
 

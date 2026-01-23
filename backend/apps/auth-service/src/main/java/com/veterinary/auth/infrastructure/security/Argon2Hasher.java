@@ -283,7 +283,7 @@ public class Argon2Hasher {
                 .withParallelism(parallelism)
                 .build();
 
-        return new HashComponents(memory, iterations, parallelism, params, hash);
+        return new HashComponents(iterations, memory, parallelism, params, hash);
     }
 
     /**
