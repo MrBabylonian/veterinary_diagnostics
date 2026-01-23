@@ -110,6 +110,10 @@ public class Argon2Hasher {
      * @throws IllegalArgumentException if password is null or empty
      */
     public String hash(String password) {
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+
         // Generate a random salt
         byte[] salt = new byte[SALT_LENGTH];
         this.secureRandom.nextBytes(salt);
@@ -165,6 +169,14 @@ public class Argon2Hasher {
      * malformed
      */
     public boolean verify(String encodedHash, String password) {
+        if (encodedHash == null || encodedHash.isEmpty()) {
+            throw new IllegalArgumentException("Encoded hash cannot be null or empty");
+        }
+
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+
         HashComponents components = parseHash(encodedHash);
 
         Argon2BytesGenerator generator = new Argon2BytesGenerator();
@@ -207,6 +219,10 @@ public class Argon2Hasher {
      * @throws IllegalArgumentException if the hash is null, empty, or malformed
      */
     public boolean needsRehash(String encodedHash) {
+        if (encodedHash == null || encodedHash.isEmpty()) {
+            throw new IllegalArgumentException("Encoded hash cannot be null or empty");
+        }
+
         HashComponents components = parseHash(encodedHash);
         return components.memory != MEMORY
                 || components.iterations != ITERATIONS
@@ -265,25 +281,53 @@ public class Argon2Hasher {
      * @throws IllegalArgumentException if Base64 decoding fails
      */
     private HashComponents parseHash(String encodedHash) {
-        String[] parts = encodedHash.split("\\$");
-        String[] paramTokens = parts[3].split(",");
+        try {
+            String[] parts = encodedHash.split("\\$");
 
-        Base64.Decoder decoder = Base64.getDecoder();
+            if (parts.length != 6) {
+                throw new IllegalArgumentException(
+                        "Invalid hash format: expected 6 parts, got " + parts.length
+                );
+            }
 
-        int memory = Integer.parseInt(paramTokens[0].substring(2));
-        int iterations = Integer.parseInt(paramTokens[1].substring(2));
-        int parallelism = Integer.parseInt(paramTokens[2].substring(2));
-        byte[] salt = decoder.decode(parts[4]);
-        byte[] hash = decoder.decode(parts[5]);
+            if (!parts[1].equals("argon2id")) {
+                throw new IllegalArgumentException(
+                        "Unsupported algorithm: " + parts[1] + " (expected argon2id)"
+                );
+            }
 
-        Argon2Parameters params = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
-                .withSalt(salt)
-                .withIterations(iterations)
-                .withMemoryAsKB(memory)
-                .withParallelism(parallelism)
-                .build();
+            String[] paramTokens = parts[3].split(",");
 
-        return new HashComponents(iterations, memory, parallelism, params, hash);
+            if (paramTokens.length != 3) {
+                throw new IllegalArgumentException(
+                        "Invalid parameters format: expected 3 params, got " + paramTokens.length
+                );
+            }
+
+            Base64.Decoder decoder = Base64.getDecoder();
+
+            int memory = Integer.parseInt(paramTokens[0].substring(2));
+            int iterations = Integer.parseInt(paramTokens[1].substring(2));
+            int parallelism = Integer.parseInt(paramTokens[2].substring(2));
+            byte[] salt = decoder.decode(parts[4]);
+            byte[] hash = decoder.decode(parts[5]);
+
+            Argon2Parameters params = new Argon2Parameters.Builder(Argon2Parameters.ARGON2_id)
+                    .withIterations(iterations)
+                    .withMemoryAsKB(memory)
+                    .withParallelism(parallelism)
+                    .withSalt(salt)
+                    .build();
+
+            return new HashComponents(iterations, memory, parallelism, params, hash);
+
+        } catch (IllegalArgumentException e) {
+            // Re-throw our own exceptions as-is
+            throw e;
+        } catch (Exception e) {
+            // Wrap any other parsing errors
+            throw new IllegalArgumentException("Failed to parse hash: " + e.getMessage(), e);
+        }
     }
 
     /**
