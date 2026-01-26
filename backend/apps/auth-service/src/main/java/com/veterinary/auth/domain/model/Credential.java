@@ -1,7 +1,7 @@
 package com.veterinary.auth.domain.model;
 
 
-import auth.Auth;
+import auth.Auth.AuthProvider;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -144,7 +144,7 @@ public class Credential {
   private final String passwordHash;
 
   @Builder.Default
-  private final Auth.AuthProvider authProvider = Auth.AuthProvider.LOCAL;
+  private final AuthProvider authProvider = AuthProvider.LOCAL;
 
   /**
    * The external provider's unique identifier for this user.
@@ -249,7 +249,7 @@ public class Credential {
    * }</pre>
    *
    * @return this credential (for method chaining)
-   * @throws NullPointerException if required fields are null
+   * @throws NullPointerException     if required fields are null
    * @throws IllegalArgumentException if business rules are violated
    */
   public Credential validate() {
@@ -263,14 +263,14 @@ public class Credential {
       throw new IllegalArgumentException("Email cannot be blank");
 
     }
-    if (authProvider == Auth.AuthProvider.LOCAL) {
+    if (authProvider == AuthProvider.LOCAL) {
       if (passwordHash == null || passwordHash.isBlank()) {
         throw new IllegalArgumentException("Password hash is required for " +
             "LOCAL authentication");
       }
     }
 
-    if (authProvider != Auth.AuthProvider.LOCAL) {
+    if (authProvider != AuthProvider.LOCAL) {
       if (authSubject == null || authSubject.isBlank()) {
         throw new IllegalArgumentException("Auth subject is required for " +
             "OAuth authentication");
@@ -280,9 +280,169 @@ public class Credential {
     return this;  // For method chaining (optional)
   }
 
+  // ──────────────────────────────────────────────────────────────────────────
+  // Domain Logic (Query Methods)
+  // ──────────────────────────────────────────────────────────────────────────
 
   /**
-   * THIS FILE IS NOT YET COMPLETE
+   * Checks whether this credential can be used to log in.
+   *
+   * <p>
+   * A credential is usable for login only if:
+   * <ul>
+   *   <li>Status is {@code ACTIVE} (not suspended or deleted)</li>
+   *   <li>Not soft-deleted ({@code deletedAt} is null)</li>
+   * </ul>
+   * </p>
+   *
+   * <h3>Usage</h3>
+   * <pre>{@code
+   * if (!credential.canLogin()) {
+   *     throw new AccountSuspendedException();
+   * }
+   * // Proceed with password verification...
+   * }</pre>
+   *
+   * @return true if login is allowed
    */
+  public boolean canLogin() {
+    return status == CredentialStatus.ACTIVE && deletedAt == null;
+  }
+
+  /**
+   * Checks whether the user has verified their email address.
+   *
+   * <p>
+   * Some features might be restricted until email verification is complete.
+   * For OAuth users, this is typically true from the start.</p>
+   *
+   * @return true if email has been verified
+   */
+  public boolean isEmailVerified() {
+    return emailVerifiedAt != null;
+  }
+
+  /**
+   * Checks whether this credential uses local (email/password) authentication.
+   *
+   * @return true if this is a local credential
+   */
+  public boolean isLocalAuth() {
+    return authProvider == AuthProvider.LOCAL;
+  }
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // Domain Logic (Mutation Methods - Return New Instances)
+  // ──────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Creates a copy of this credential with an updated last login timestamp.
+   *
+   * <p>
+   * Call this after successful authentication to record the login event.
+   * Also updates {@code updatedAt} automatically.</p>
+   *
+   * <h3>Example</h3>
+   * <pre>{@code
+   * // After verifying password:
+   * Credential updated = credential.withLastLogin(Instant.now());
+   * repository.update(updated);
+   * }</pre>
+   *
+   * @param loginTime when the login occurred (typically {@code Instant.now()})
+   * @return a new Credential instance with updated timestamps
+   */
+  public Credential withLastLogin(Instant loginTime) {
+    return this.toBuilder()
+        .lastLoginAt(loginTime)
+        .updatedAt(Instant.now())
+        .build();
+  }
+
+  /**
+   * Creates a soft-deleted copy of this credential.
+   *
+   * <p>
+   * Soft deletion preserves the record for audit purposes while preventing
+   * login. The account can potentially be recovered by an administrator.</p>
+   *
+   * <h3>What Gets Changed</h3>
+   * <ul>
+   *   <li>{@code status} → {@code DELETED}</li>
+   *   <li>{@code deletedAt} → current timestamp</li>
+   *   <li>{@code updatedAt} → current timestamp</li>
+   * </ul>
+   *
+   * @return a new Credential instance marked as deleted
+   */
+  public Credential asSoftDeleted(){
+    return this.toBuilder()
+        .status(CredentialStatus.DELETED)
+        .deletedAt()
+        .updatedAt()
+        .build();
+  }
+
+  /**
+   * Creates a copy with the email marked as verified.
+   *
+   * <p>
+   * Call this when the user clicks the email verification link.</p>
+   *
+   * @return a new Credential instance with verified email
+   */
+  public Credential withVerifiedEmail() {
+    return this.toBuilder()
+        .emailVerifiedAt(Instant.now())
+        .updatedAt(Instant.now())
+        .build();
+  }
+
+  /**
+   * Creates a copy with an updated password hash.
+   *
+   * <p>
+   * Use this for password changes or when rehashing with updated parameters.
+   * The caller is responsible for hashing the new password before calling this.</p>
+   *
+   * <h3>Example</h3>
+   * <pre>{@code
+   * String newHash = argon2Hasher.hash(newPassword);
+   * Credential updated = credential.withPasswordHash(newHash);
+   * repository.update(updated);
+   * }</pre>
+   *
+   * @param newPasswordHash the new Argon2id hash (not the plain password!)
+   * @return a new Credential instance with the updated hash
+   */
+  public Credential withPasswordHash(String newPasswordHash) {
+    return this.toBuilder()
+        .passwordHash(newPasswordHash)
+        .updatedAt(Instant.now())
+        .build();
+  }
+
+  public Credential asSuspended() {
+    return this.toBuilder()
+        .status(CredentialStatus.SUSPENDED)
+        .updatedAt(Instant.now())
+        .build();
+  }
+
+  /**
+   * Creates a reactivated copy of this credential.
+   *
+   * <p>
+   * Restores a suspended or soft-deleted account to active status.</p>
+   *
+   * @return a new Credential instance with active status
+   */
+  public Credential asReactivated() {
+    return this.toBuilder()
+        .status(CredentialStatus.ACTIVE)
+        .deletedAt(null)
+        .updatedAt(Instant.now())
+        .build();
+  }
 }
 
