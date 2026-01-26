@@ -6,6 +6,7 @@ package auth;
 // 1. DATA MODELS
 // ---------------------------------------------------------
 
+// TODO: ADD STATUS
 
 enum AuthProvider {
   LOCAL = 0;
