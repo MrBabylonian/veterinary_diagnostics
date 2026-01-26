@@ -378,8 +378,8 @@ public class Credential {
   public Credential asSoftDeleted(){
     return this.toBuilder()
         .status(CredentialStatus.DELETED)
-        .deletedAt()
-        .updatedAt()
+        .deletedAt(Instant.now())
+        .updatedAt(Instant.now())
         .build();
   }
 
